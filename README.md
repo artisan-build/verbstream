@@ -1,6 +1,6 @@
-# Skeleton
+# Verbstream
 
-SkeletonDescription
+Livewire auth scaffolding inspired by Jetstream and powered by Verbs and FluxUI
 
 > [!WARNING]  
 > This package is currently under active development, and we have not yet released a major version. Once a 0.* version
@@ -9,7 +9,7 @@ SkeletonDescription
 
 ## Installation
 
-`composer require artisan-build/skeleton`
+`composer require artisan-build/verbstream`
 
 ## Configuration
 

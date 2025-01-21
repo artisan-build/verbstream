@@ -1,6 +1,6 @@
 {
-	"name": "artisan-build/skeleton",
-	"description": "SkeletonDescription",
+	"name": "artisan-build/verbstream",
+	"description": "Livewire auth scaffolding inspired by Jetstream and powered by Verbs and FluxUI",
 	"type": "library",
 	"license": "MIT",
 	"require": {
@@ -15,15 +15,15 @@
     },
 	"autoload": {
 		"psr-4": {
-			"ArtisanBuild\\Skeleton\\": "src/",
-			"ArtisanBuild\\Skeleton\\Tests\\": "tests/"
+			"ArtisanBuild\\Verbstream\\": "src/",
+			"ArtisanBuild\\Verbstream\\Tests\\": "tests/"
 		}
 	},
 	"minimum-stability": "stable",
 	"extra": {
 		"laravel": {
 			"providers": [
-				"ArtisanBuild\\Skeleton\\Providers\\SkeletonServiceProvider"
+				"ArtisanBuild\\Verbstream\\Providers\\VerbstreamServiceProvider"
 			]
 		}
 	},
