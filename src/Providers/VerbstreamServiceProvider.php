@@ -52,14 +52,14 @@ class VerbstreamServiceProvider extends ServiceProvider
     #[Override]
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__.'/../../config/verbstream.php', 'verbstream');
-        $this->loadRoutesFrom(__DIR__.'/../../routes/verbstream.php');
+        $this->mergeConfigFrom(__DIR__ . '/../../config/verbstream.php', 'verbstream');
+        $this->loadRoutesFrom(__DIR__ . '/../../routes/verbstream.php');
     }
 
     public function boot(): void
     {
         $this->publishes([
-            __DIR__.'/../../config/verbstream.php' => config_path('verbstream.php'),
+            __DIR__ . '/../../config/verbstream.php' => config_path('verbstream.php'),
         ], 'verbstream');
 
         Fortify::viewPrefix('auth.');
@@ -88,25 +88,25 @@ class VerbstreamServiceProvider extends ServiceProvider
             ]);
         });
 
-        if (config('jetstream.stack') === 'livewire' && class_exists(Livewire::class)) {
-            Livewire::component('navigation-menu', NavigationMenu::class);
-            Livewire::component('profile.update-profile-information-form', UpdateProfileInformationForm::class);
-            Livewire::component('profile.update-password-form', UpdatePasswordForm::class);
-            Livewire::component('profile.two-factor-authentication-form', TwoFactorAuthenticationForm::class);
-            Livewire::component('profile.logout-other-browser-sessions-form', LogoutOtherBrowserSessionsForm::class);
-            Livewire::component('profile.delete-user-form', DeleteUserForm::class);
 
-            if (Features::hasApiFeatures()) {
-                Livewire::component('api.api-token-manager', ApiTokenManager::class);
-            }
+        Livewire::component('navigation-menu', NavigationMenu::class);
+        Livewire::component('profile.update-profile-information-form', UpdateProfileInformationForm::class);
+        Livewire::component('profile.update-password-form', UpdatePasswordForm::class);
+        Livewire::component('profile.two-factor-authentication-form', TwoFactorAuthenticationForm::class);
+        Livewire::component('profile.logout-other-browser-sessions-form', LogoutOtherBrowserSessionsForm::class);
+        Livewire::component('profile.delete-user-form', DeleteUserForm::class);
 
-            if (Features::hasTeamFeatures()) {
-                Livewire::component('teams.create-team-form', CreateTeamForm::class);
-                Livewire::component('teams.update-team-name-form', UpdateTeamNameForm::class);
-                Livewire::component('teams.team-member-manager', TeamMemberManager::class);
-                Livewire::component('teams.delete-team-form', DeleteTeamForm::class);
-            }
+        if (Features::hasApiFeatures()) {
+            Livewire::component('api.api-token-manager', ApiTokenManager::class);
         }
+
+        if (Features::hasTeamFeatures()) {
+            Livewire::component('teams.create-team-form', CreateTeamForm::class);
+            Livewire::component('teams.update-team-name-form', UpdateTeamNameForm::class);
+            Livewire::component('teams.team-member-manager', TeamMemberManager::class);
+            Livewire::component('teams.delete-team-form', DeleteTeamForm::class);
+        }
+
 
         $this->configurePermissions();
 
@@ -124,9 +124,8 @@ class VerbstreamServiceProvider extends ServiceProvider
         app()->singleton(ResetsUserPasswords::class, ResetUserPassword::class);
 
 
-
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });
