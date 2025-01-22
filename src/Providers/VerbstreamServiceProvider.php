@@ -20,19 +20,31 @@ use ArtisanBuild\Verbstream\Contracts\DeletesUsers;
 use ArtisanBuild\Verbstream\Contracts\InvitesTeamMembers;
 use ArtisanBuild\Verbstream\Contracts\RemovesTeamMembers;
 use ArtisanBuild\Verbstream\Contracts\UpdatesTeamNames;
+use ArtisanBuild\Verbstream\Features;
+use ArtisanBuild\Verbstream\Http\Livewire\ApiTokenManager;
+use ArtisanBuild\Verbstream\Http\Livewire\CreateTeamForm;
+use ArtisanBuild\Verbstream\Http\Livewire\DeleteTeamForm;
+use ArtisanBuild\Verbstream\Http\Livewire\DeleteUserForm;
+use ArtisanBuild\Verbstream\Http\Livewire\LogoutOtherBrowserSessionsForm;
+use ArtisanBuild\Verbstream\Http\Livewire\NavigationMenu;
+use ArtisanBuild\Verbstream\Http\Livewire\TeamMemberManager;
+use ArtisanBuild\Verbstream\Http\Livewire\TwoFactorAuthenticationForm;
+use ArtisanBuild\Verbstream\Http\Livewire\UpdatePasswordForm;
+use ArtisanBuild\Verbstream\Http\Livewire\UpdateProfileInformationForm;
+use ArtisanBuild\Verbstream\Http\Livewire\UpdateTeamNameForm;
 use ArtisanBuild\Verbstream\Verbstream;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
-use Laravel\Fortify\Contracts\RegisterViewResponse;
 use Laravel\Fortify\Contracts\ResetsUserPasswords;
 use Laravel\Fortify\Contracts\UpdatesUserPasswords;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 use Laravel\Fortify\Fortify;
-use Laravel\Fortify\Http\Responses\SimpleViewResponse;
+use Livewire\Livewire;
 use Override;
 
 class VerbstreamServiceProvider extends ServiceProvider
@@ -49,6 +61,52 @@ class VerbstreamServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../../config/verbstream.php' => config_path('verbstream.php'),
         ], 'verbstream');
+
+        Fortify::viewPrefix('auth.');
+
+        RedirectResponse::macro('banner', function ($message) {
+            /** @var RedirectResponse $this */
+            return $this->with('flash', [
+                'bannerStyle' => 'success',
+                'banner' => $message,
+            ]);
+        });
+
+        RedirectResponse::macro('warningBanner', function ($message) {
+            /** @var RedirectResponse $this */
+            return $this->with('flash', [
+                'bannerStyle' => 'warning',
+                'banner' => $message,
+            ]);
+        });
+
+        RedirectResponse::macro('dangerBanner', function ($message) {
+            /** @var RedirectResponse $this */
+            return $this->with('flash', [
+                'bannerStyle' => 'danger',
+                'banner' => $message,
+            ]);
+        });
+
+        if (config('jetstream.stack') === 'livewire' && class_exists(Livewire::class)) {
+            Livewire::component('navigation-menu', NavigationMenu::class);
+            Livewire::component('profile.update-profile-information-form', UpdateProfileInformationForm::class);
+            Livewire::component('profile.update-password-form', UpdatePasswordForm::class);
+            Livewire::component('profile.two-factor-authentication-form', TwoFactorAuthenticationForm::class);
+            Livewire::component('profile.logout-other-browser-sessions-form', LogoutOtherBrowserSessionsForm::class);
+            Livewire::component('profile.delete-user-form', DeleteUserForm::class);
+
+            if (Features::hasApiFeatures()) {
+                Livewire::component('api.api-token-manager', ApiTokenManager::class);
+            }
+
+            if (Features::hasTeamFeatures()) {
+                Livewire::component('teams.create-team-form', CreateTeamForm::class);
+                Livewire::component('teams.update-team-name-form', UpdateTeamNameForm::class);
+                Livewire::component('teams.team-member-manager', TeamMemberManager::class);
+                Livewire::component('teams.delete-team-form', DeleteTeamForm::class);
+            }
+        }
 
         $this->configurePermissions();
 
