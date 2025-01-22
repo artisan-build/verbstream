@@ -2,18 +2,22 @@
 
 namespace ArtisanBuild\Verbstream\Http\Livewire;
 
+use App\Models\User;
 use ArtisanBuild\Verbstream\Actions\UpdateTeamMemberRole;
 use ArtisanBuild\Verbstream\Contracts\AddsTeamMembers;
 use ArtisanBuild\Verbstream\Contracts\InvitesTeamMembers;
 use ArtisanBuild\Verbstream\Contracts\RemovesTeamMembers;
 use ArtisanBuild\Verbstream\Features;
-use ArtisanBuild\Verbstream\Verbstream;
 use ArtisanBuild\Verbstream\Role;
+use ArtisanBuild\Verbstream\Verbstream;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Livewire\Component;
 
+/**
+ * @property User $user
+ */
 class TeamMemberManager extends Component
 {
     /**
@@ -148,6 +152,7 @@ class TeamMemberManager extends Component
     {
         $this->currentlyManagingRole = true;
         $this->managingRoleFor = Verbstream::findUserByIdOrFail($userId);
+        /** @phpstan-ignore-next-line  */
         $this->currentRole = $this->managingRoleFor->teamRole($this->team)->key;
     }
 
@@ -250,7 +255,7 @@ class TeamMemberManager extends Component
      */
     public function getRolesProperty()
     {
-        return collect(Verbstream::$roles)->transform(fn($role) => with($role->jsonSerialize(), fn($data) => (new Role(
+        return collect(Verbstream::$roles)->transform(fn ($role) => with($role->jsonSerialize(), fn ($data) => (new Role(
             $data['key'],
             $data['name'],
             $data['permissions']

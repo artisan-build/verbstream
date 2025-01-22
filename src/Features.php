@@ -6,8 +6,6 @@ class Features
 {
     /**
      * Determine if the given feature is enabled.
-     *
-     * @return bool
      */
     public static function enabled(string $feature): bool
     {
@@ -16,8 +14,6 @@ class Features
 
     /**
      * Determine if the feature is enabled and has a given option enabled.
-     *
-     * @return bool
      */
     public static function optionEnabled(string $feature, string $option): bool
     {

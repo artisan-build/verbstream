@@ -24,7 +24,5 @@ class RemovingTeamMember
          * The team member being removed.
          */
         public $user
-    )
-    {
-    }
+    ) {}
 }

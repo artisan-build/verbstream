@@ -52,14 +52,14 @@ class VerbstreamServiceProvider extends ServiceProvider
     #[Override]
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../../config/verbstream.php', 'verbstream');
-        $this->loadRoutesFrom(__DIR__ . '/../../routes/verbstream.php');
+        $this->mergeConfigFrom(__DIR__.'/../../config/verbstream.php', 'verbstream');
+        $this->loadRoutesFrom(__DIR__.'/../../routes/verbstream.php');
     }
 
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/../../config/verbstream.php' => config_path('verbstream.php'),
+            __DIR__.'/../../config/verbstream.php' => config_path('verbstream.php'),
         ], 'verbstream');
 
         Fortify::viewPrefix('auth.');
@@ -88,7 +88,6 @@ class VerbstreamServiceProvider extends ServiceProvider
             ]);
         });
 
-
         Livewire::component('navigation-menu', NavigationMenu::class);
         Livewire::component('profile.update-profile-information-form', UpdateProfileInformationForm::class);
         Livewire::component('profile.update-password-form', UpdatePasswordForm::class);
@@ -107,7 +106,6 @@ class VerbstreamServiceProvider extends ServiceProvider
             Livewire::component('teams.delete-team-form', DeleteTeamForm::class);
         }
 
-
         $this->configurePermissions();
 
         app()->singleton(CreatesTeams::class, CreateTeam::class);
@@ -123,14 +121,13 @@ class VerbstreamServiceProvider extends ServiceProvider
         app()->singleton(UpdatesUserPasswords::class, UpdateUserPassword::class);
         app()->singleton(ResetsUserPasswords::class, ResetUserPassword::class);
 
-
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });
 
-        RateLimiter::for('two-factor', fn(Request $request) => Limit::perMinute(5)->by($request->session()->get('login.id')));
+        RateLimiter::for('two-factor', fn (Request $request) => Limit::perMinute(5)->by($request->session()->get('login.id')));
     }
 
     protected function configurePermissions(): void

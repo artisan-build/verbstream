@@ -3,13 +3,15 @@
 namespace ArtisanBuild\Verbstream;
 
 use App\Models\User;
-use Eloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 
+/**
+ * @property int|string $id
+ */
 abstract class Team extends Model
 {
     /**
@@ -63,7 +65,7 @@ abstract class Team extends Model
      */
     public function hasUserWithEmail(string $email)
     {
-        return $this->allUsers()->contains(fn($user) => $user->email === $email);
+        return $this->allUsers()->contains(fn ($user) => $user->email === $email);
     }
 
     /**

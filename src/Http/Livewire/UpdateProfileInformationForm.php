@@ -71,6 +71,8 @@ class UpdateProfileInformationForm extends Component
         $this->dispatch('saved');
 
         $this->dispatch('refresh-navigation-menu');
+
+        return null;
     }
 
     /**

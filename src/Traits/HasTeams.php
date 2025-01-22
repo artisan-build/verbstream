@@ -3,6 +3,8 @@
 namespace ArtisanBuild\Verbstream\Traits;
 
 use App\Models\Team;
+use ArtisanBuild\Verbstream\OwnerRole;
+use ArtisanBuild\Verbstream\Role;
 use ArtisanBuild\Verbstream\Verbstream;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -129,23 +131,17 @@ trait HasTeams
             return false;
         }
 
-        return $this->ownsTeam($team) || $this->teams->contains(fn($t) => $t->id === $team->id);
+        return $this->ownsTeam($team) || $this->teams->contains(fn ($t) => $t->id === $team->id);
     }
 
-    /**
-     * Get the role that the user has on the team.
-     *
-     * @param  mixed  $team
-     * @return Role|null
-     */
-    public function teamRole($team)
+    public function teamRole($team): Role|OwnerRole|null
     {
         if ($this->ownsTeam($team)) {
             return new OwnerRole;
         }
 
         if (! $this->belongsToTeam($team)) {
-            return;
+            return null;
         }
 
         $role = $team->users
@@ -157,13 +153,7 @@ trait HasTeams
         return $role ? Verbstream::findRole($role) : null;
     }
 
-    /**
-     * Determine if the user has the given role on the given team.
-     *
-     * @param  mixed  $team
-     * @return bool
-     */
-    public function hasTeamRole($team, string $role)
+    public function hasTeamRole($team, string $role): bool
     {
         if ($this->ownsTeam($team)) {
             return true;
@@ -174,13 +164,7 @@ trait HasTeams
         )->first()->membership->role))->key === $role;
     }
 
-    /**
-     * Get the user's permissions for the given team.
-     *
-     * @param  mixed  $team
-     * @return array
-     */
-    public function teamPermissions($team)
+    public function teamPermissions($team): array
     {
         if ($this->ownsTeam($team)) {
             return ['*'];
@@ -193,13 +177,7 @@ trait HasTeams
         return (array) optional($this->teamRole($team))->permissions;
     }
 
-    /**
-     * Determine if the user has the given permission on the given team.
-     *
-     * @param  mixed  $team
-     * @return bool
-     */
-    public function hasTeamPermission($team, string $permission)
+    public function hasTeamPermission($team, string $permission): bool
     {
         if ($this->ownsTeam($team)) {
             return true;

@@ -9,12 +9,6 @@ use Illuminate\Routing\Redirector;
 
 trait RedirectsActions
 {
-    /**
-     * Get the redirect response for the given action.
-     *
-     * @param  mixed  $action
-     * @return Response
-     */
     public function redirectPath(mixed $action): Application|RedirectResponse|Redirector
     {
         if (method_exists($action, 'redirectTo')) {

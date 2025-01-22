@@ -2,10 +2,15 @@
 
 namespace ArtisanBuild\Verbstream\Http\Livewire;
 
+use App\Models\User;
 use ArtisanBuild\Verbstream\Contracts\UpdatesTeamNames;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Livewire\Component;
 
+/**
+ * @property User $user
+ */
 class UpdateTeamNameForm extends Component
 {
     /**
@@ -64,7 +69,7 @@ class UpdateTeamNameForm extends Component
     /**
      * Render the component.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function render()
     {

@@ -24,7 +24,5 @@ class TeamMemberAdded
          * The team member that was added.
          */
         public $user
-    )
-    {
-    }
+    ) {}
 }

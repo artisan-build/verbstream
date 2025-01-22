@@ -19,7 +19,5 @@ class AddingTeam
          * The team owner.
          */
         public $owner
-    )
-    {
-    }
+    ) {}
 }

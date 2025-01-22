@@ -62,7 +62,7 @@ class Agent extends MobileDetect
      */
     public function platform()
     {
-        return $this->retrieveUsingCacheOrResolve('verbstream.platform', fn() => $this->findDetectionRulesAgainstUserAgent(
+        return $this->retrieveUsingCacheOrResolve('verbstream.platform', fn () => $this->findDetectionRulesAgainstUserAgent(
             $this->mergeRules(MobileDetect::getOperatingSystems(), static::$additionalOperatingSystems)
         ));
     }
@@ -74,7 +74,7 @@ class Agent extends MobileDetect
      */
     public function browser()
     {
-        return $this->retrieveUsingCacheOrResolve('verbstream.browser', fn() => $this->findDetectionRulesAgainstUserAgent(
+        return $this->retrieveUsingCacheOrResolve('verbstream.browser', fn () => $this->findDetectionRulesAgainstUserAgent(
             $this->mergeRules(static::$additionalBrowsers, MobileDetect::getBrowsers())
         ));
     }
@@ -101,8 +101,6 @@ class Agent extends MobileDetect
 
     /**
      * Match a detection rule and return the matched key.
-     *
-     * @return string|null
      */
     protected function findDetectionRulesAgainstUserAgent(array $rules): ?string
     {
@@ -125,7 +123,6 @@ class Agent extends MobileDetect
      * Retrieve from the given key from the cache or resolve the value.
      *
      * @param  Closure():mixed  $callback
-     * @return mixed
      */
     protected function retrieveUsingCacheOrResolve(string $key, Closure $callback): mixed
     {

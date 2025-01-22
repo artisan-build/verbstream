@@ -106,7 +106,7 @@ class LogoutOtherBrowserSessionsForm extends Component
                 ->where('user_id', Auth::user()->getAuthIdentifier())
                 ->orderBy('last_activity', 'desc')
                 ->get()
-        )->map(fn($session) => (object) [
+        )->map(fn ($session) => (object) [
             'agent' => $this->createAgent($session),
             'ip_address' => $session->ip_address,
             'is_current_device' => $session->id === request()->session()->getId(),

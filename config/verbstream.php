@@ -5,7 +5,6 @@ use ArtisanBuild\Verbstream\Http\Middleware\AuthenticateSession;
 
 return [
 
-
     /*
     |--------------------------------------------------------------------------
     | Jetstream Route Middleware

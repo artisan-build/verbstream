@@ -3,15 +3,8 @@
 namespace ArtisanBuild\Verbstream;
 
 use App\Models\User;
-use ArtisanBuild\Verbstream\Contracts\AddsTeamMembers;
-use ArtisanBuild\Verbstream\Contracts\CreatesTeams;
-use ArtisanBuild\Verbstream\Contracts\DeletesTeams;
-use ArtisanBuild\Verbstream\Contracts\DeletesUsers;
-use ArtisanBuild\Verbstream\Contracts\InvitesTeamMembers;
-use ArtisanBuild\Verbstream\Contracts\RemovesTeamMembers;
-use ArtisanBuild\Verbstream\Contracts\UpdatesTeamNames;
+use ArtisanBuild\Verbstream\Traits\HasTeams;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
 /* Why we used final here...
@@ -48,8 +41,6 @@ final class Verbstream
 
     /**
      * Find the role with the given key.
-     *
-     * @return Role
      */
     public static function findRole(string $key): ?Role
     {
@@ -125,13 +116,13 @@ final class Verbstream
         return Features::hasAccountDeletionFeatures();
     }
 
-    public static function findUserByIdOrFail($id): Authenticatable
+    public static function findUserByIdOrFail($id): \Illuminate\Foundation\Auth\User
     {
         /** @phpstan-ignore-next-line  */
         return self::newUserModel()->where('id', $id)->firstOrFail();
     }
 
-    public static function findUserByEmailOrFail(string $email): Authenticatable
+    public static function findUserByEmailOrFail(string $email): \Illuminate\Foundation\Auth\User
     {
         /** @phpstan-ignore-next-line  */
         return self::newUserModel()->where('email', $email)->firstOrFail();
@@ -199,9 +190,8 @@ final class Verbstream
         return Arr::first([
             resource_path('markdown/'.$localName),
             resource_path('markdown/'.$name),
-        ], static fn($path) => file_exists($path));
+        ], static fn ($path) => file_exists($path));
     }
-
 
     public static function ignoreRoutes(): Verbstream
     {

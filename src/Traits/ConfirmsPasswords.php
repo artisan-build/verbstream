@@ -32,15 +32,13 @@ trait ConfirmsPasswords
 
     /**
      * Start confirming the user's password.
-     *
-     * @return void
      */
-    public function startConfirmingPassword(string $confirmableId)
+    public function startConfirmingPassword(string $confirmableId): void
     {
         $this->resetErrorBag();
 
         if ($this->passwordIsConfirmed()) {
-            return $this->dispatch('password-confirmed',
+            $this->dispatch('password-confirmed',
                 id: $confirmableId,
             );
         }

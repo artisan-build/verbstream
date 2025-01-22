@@ -2,6 +2,7 @@
 
 namespace ArtisanBuild\Verbstream\Http\Livewire;
 
+use App\Models\User;
 use ArtisanBuild\Verbstream\Verbstream;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -10,6 +11,9 @@ use Laravel\Sanctum\NewAccessToken;
 use Laravel\Sanctum\PersonalAccessToken;
 use Livewire\Component;
 
+/**
+ * @property User $user
+ */
 class ApiTokenManager extends Component
 {
     /**

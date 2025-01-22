@@ -3,8 +3,8 @@
 namespace ArtisanBuild\Verbstream\Actions;
 
 use ArtisanBuild\Verbstream\Events\TeamMemberUpdated;
-use ArtisanBuild\Verbstream\Verbstream;
 use ArtisanBuild\Verbstream\Rules\Role;
+use ArtisanBuild\Verbstream\Verbstream;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 
