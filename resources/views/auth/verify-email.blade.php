@@ -1,17 +1,14 @@
-<x-guest-layout>
+<x-app-layout>
     <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
 
-        <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('Before continuing, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
-        </div>
+        <flux:text>
+            {{ __('Before continuing, please verify your email address by clicking on the link we just emailed to you. If you didn\'t receive the email, we will gladly send you another.') }}
+        </flux:text>
 
         @if (session('status') == 'verification-link-sent')
-            <div class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
+            <flux:text>
                 {{ __('A new verification link has been sent to the email address you provided in your profile settings.') }}
-            </div>
+            </flux:text>
         @endif
 
         <div class="mt-4 flex items-center justify-between">
@@ -19,27 +16,26 @@
                 @csrf
 
                 <div>
-                    <x-button type="submit">
+                    <flux:button type="submit">
                         {{ __('Resend Verification Email') }}
-                    </x-button>
+                    </flux:button>
                 </div>
             </form>
 
             <div>
-                <a
+                <flux:button variant="subtle"
                     href="{{ route('profile.show') }}"
-                    class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                 >
-                    {{ __('Edit Profile') }}</a>
+                    {{ __('Edit Profile') }}</flux:button>
 
                 <form method="POST" action="{{ route('logout') }}" class="inline">
                     @csrf
 
-                    <button type="submit" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800 ms-2">
+                    <flux:button type="submit" variant="subtle">
                         {{ __('Log Out') }}
-                    </button>
+                    </flux:button>
                 </form>
             </div>
         </div>
     </x-authentication-card>
-</x-guest-layout>
+</x-app-layout>

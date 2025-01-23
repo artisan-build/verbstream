@@ -62,7 +62,9 @@ class VerbstreamServiceProvider extends ServiceProvider
             __DIR__.'/../../config/verbstream.php' => config_path('verbstream.php'),
         ], 'verbstream');
 
-        Fortify::viewPrefix('auth.');
+        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'verbstream');
+
+        Fortify::viewPrefix('verbstream::auth.');
 
         RedirectResponse::macro('banner', function ($message) {
             /** @var RedirectResponse $this */
