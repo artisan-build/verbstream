@@ -66,29 +66,26 @@ class VerbstreamServiceProvider extends ServiceProvider
 
         Fortify::viewPrefix('verbstream::auth.');
 
-        RedirectResponse::macro('banner', function ($message) {
+        RedirectResponse::macro('banner', fn($message) =>
             /** @var RedirectResponse $this */
-            return $this->with('flash', [
-                'bannerStyle' => 'success',
-                'banner' => $message,
-            ]);
-        });
+            $this->with('flash', [
+            'bannerStyle' => 'success',
+            'banner' => $message,
+        ]));
 
-        RedirectResponse::macro('warningBanner', function ($message) {
+        RedirectResponse::macro('warningBanner', fn($message) =>
             /** @var RedirectResponse $this */
-            return $this->with('flash', [
-                'bannerStyle' => 'warning',
-                'banner' => $message,
-            ]);
-        });
+            $this->with('flash', [
+            'bannerStyle' => 'warning',
+            'banner' => $message,
+        ]));
 
-        RedirectResponse::macro('dangerBanner', function ($message) {
+        RedirectResponse::macro('dangerBanner', fn($message) =>
             /** @var RedirectResponse $this */
-            return $this->with('flash', [
-                'bannerStyle' => 'danger',
-                'banner' => $message,
-            ]);
-        });
+            $this->with('flash', [
+            'bannerStyle' => 'danger',
+            'banner' => $message,
+        ]));
 
         Livewire::component('navigation-menu', NavigationMenu::class);
         Livewire::component('profile.update-profile-information-form', UpdateProfileInformationForm::class);
