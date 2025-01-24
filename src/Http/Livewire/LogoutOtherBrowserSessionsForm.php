@@ -3,12 +3,15 @@
 namespace ArtisanBuild\Verbstream\Http\Livewire;
 
 use ArtisanBuild\Verbstream\Agent;
+use Flux\Flux;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
 use Livewire\Component;
 
 class LogoutOtherBrowserSessionsForm extends Component
@@ -43,10 +46,8 @@ class LogoutOtherBrowserSessionsForm extends Component
 
     /**
      * Log out from other browser sessions.
-     *
-     * @return void
      */
-    public function logoutOtherBrowserSessions(StatefulGuard $guard)
+    public function logoutOtherBrowserSessions(StatefulGuard $guard): void
     {
         if (config('session.driver') !== 'database') {
             return;
@@ -67,6 +68,8 @@ class LogoutOtherBrowserSessionsForm extends Component
         request()->session()->put([
             'password_hash_'.Auth::getDefaultDriver() => Auth::user()->getAuthPassword(),
         ]);
+
+        Flux::modal('confirm-logout')->close();
 
         $this->confirmingLogout = false;
 
@@ -93,7 +96,7 @@ class LogoutOtherBrowserSessionsForm extends Component
     /**
      * Get the current sessions.
      *
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function getSessionsProperty()
     {
@@ -118,7 +121,7 @@ class LogoutOtherBrowserSessionsForm extends Component
      * Create a new agent instance from the given session.
      *
      * @param  mixed  $session
-     * @return \ArtisanBuild\Verbstream\Agent
+     * @return Agent
      */
     protected function createAgent($session)
     {
@@ -128,7 +131,7 @@ class LogoutOtherBrowserSessionsForm extends Component
     /**
      * Render the component.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function render()
     {
