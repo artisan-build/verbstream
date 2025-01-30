@@ -1,4 +1,4 @@
-<x-form-section submit="createTeam">
+<x-verbstream::form-section submit="createTeam">
     <x-slot name="title">
         {{ __('Team Details') }}
     </x-slot>
@@ -9,7 +9,7 @@
 
     <x-slot name="form">
         <div class="col-span-6">
-            <x-label value="{{ __('Team Owner') }}" />
+            <x-verbstream::label value="{{ __('Team Owner') }}" />
 
             <div class="flex items-center mt-2">
                 <img class="size-12 rounded-full object-cover" src="{{ $this->user->profile_photo_url }}" alt="{{ $this->user->name }}">
@@ -22,15 +22,15 @@
         </div>
 
         <div class="col-span-6 sm:col-span-4">
-            <x-label for="name" value="{{ __('Team Name') }}" />
-            <x-input id="name" type="text" class="mt-1 block w-full" wire:model="state.name" autofocus />
-            <x-input-error for="name" class="mt-2" />
+            <x-verbstream::label for="name" value="{{ __('Team Name') }}" />
+            <flux:input id="name" type="text" class="mt-1 block w-full" wire:model="state.name" autofocus />
+            <x-verbstream::input-error for="name" class="mt-2" />
         </div>
     </x-slot>
 
     <x-slot name="actions">
-        <x-button>
+        <flux:button type="submit">
             {{ __('Create') }}
-        </x-button>
+        </flux:button>
     </x-slot>
-</x-form-section>
+</x-verbstream::form-section>

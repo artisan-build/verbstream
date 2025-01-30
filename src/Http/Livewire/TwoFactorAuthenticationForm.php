@@ -172,6 +172,6 @@ class TwoFactorAuthenticationForm extends Component
      */
     public function render()
     {
-        return view('profile.two-factor-authentication-form');
+        return view('verbstream::profile.two-factor-authentication-form');
     }
 }

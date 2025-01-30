@@ -17,7 +17,7 @@ class UserProfileController extends Controller
     {
         view()->share('title', 'Edit Your Profile');
 
-        return view('profile.show', [
+        return view('verbstream::profile.show', [
             'request' => $request,
             'user' => $request->user(),
         ]);

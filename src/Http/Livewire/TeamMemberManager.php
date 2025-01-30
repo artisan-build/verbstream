@@ -269,6 +269,6 @@ class TeamMemberManager extends Component
      */
     public function render()
     {
-        return view('teams.team-member-manager');
+        return view('verbstream::teams.team-member-manager');
     }
 }

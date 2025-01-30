@@ -24,7 +24,7 @@ class TeamController extends Controller
             abort(403);
         }
 
-        return view('teams.show', [
+        return view('verbstream::teams.show', [
             'user' => $request->user(),
             'team' => $team,
         ]);
@@ -39,7 +39,7 @@ class TeamController extends Controller
     {
         Gate::authorize('create', Verbstream::newTeamModel());
 
-        return view('teams.create', [
+        return view('verbstream::teams.create', [
             'user' => $request->user(),
         ]);
     }

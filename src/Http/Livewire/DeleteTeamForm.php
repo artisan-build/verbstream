@@ -61,6 +61,6 @@ class DeleteTeamForm extends Component
      */
     public function render()
     {
-        return view('teams.delete-team-form');
+        return view('verbstream::teams.delete-team-form');
     }
 }

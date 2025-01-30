@@ -3,6 +3,7 @@
 namespace ArtisanBuild\Verbstream\Http\Livewire;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Laravel\Fortify\Contracts\UpdatesUserPasswords;
 use Livewire\Component;
 
@@ -58,10 +59,10 @@ class UpdatePasswordForm extends Component
     /**
      * Render the component.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function render()
     {
-        return view('profile.update-password-form');
+        return view('verbstream::profile.update-password-form');
     }
 }

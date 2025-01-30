@@ -4,10 +4,13 @@ namespace ArtisanBuild\Verbstream\Http\Livewire;
 
 use ArtisanBuild\Verbstream\Contracts\DeletesUsers;
 use Illuminate\Contracts\Auth\StatefulGuard;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
 use Livewire\Component;
 
 class DeleteUserForm extends Component
@@ -45,7 +48,7 @@ class DeleteUserForm extends Component
     /**
      * Delete the current user.
      *
-     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     * @return Redirector|RedirectResponse
      */
     public function deleteUser(Request $request, DeletesUsers $deleter, StatefulGuard $auth)
     {
@@ -72,10 +75,10 @@ class DeleteUserForm extends Component
     /**
      * Render the component.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function render()
     {
-        return view('profile.delete-user-form');
+        return view('verbstream::profile.delete-user-form');
     }
 }

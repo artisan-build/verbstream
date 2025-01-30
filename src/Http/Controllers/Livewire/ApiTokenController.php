@@ -4,17 +4,18 @@ namespace ArtisanBuild\Verbstream\Http\Controllers\Livewire;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 
 class ApiTokenController extends Controller
 {
     /**
      * Show the user API token screen.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function index(Request $request)
     {
-        return view('api.index', [
+        return view('verbstream::api.index', [
             'request' => $request,
             'user' => $request->user(),
         ]);

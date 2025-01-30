@@ -1,4 +1,4 @@
-<x-action-section>
+<x-verbstream::action-section>
     <x-slot name="title">
         {{ __('Two Factor Authentication') }}
     </x-slot>
@@ -44,19 +44,18 @@
 
                 <div class="mt-4 max-w-xl text-sm text-gray-600 dark:text-gray-400">
                     <p class="font-semibold">
-                        {{ __('Setup Key') }}: {{ decrypt($this->user->two_factor_secret) }}
+                        {{ __('Setup Key') }}: <flux:input icon="key" :value="decrypt($this->user->two_factor_secret)" readonly copyable />
                     </p>
                 </div>
 
                 @if ($showingConfirmation)
                     <div class="mt-4">
-                        <x-label for="code" value="{{ __('Code') }}" />
 
-                        <x-input id="code" type="text" name="code" class="block mt-1 w-1/2" inputmode="numeric" autofocus autocomplete="one-time-code"
+                        <flux:input :label="__('Code')" id="code" type="text" name="code" class="block mt-1 w-1/2" inputmode="numeric" autofocus autocomplete="one-time-code"
                             wire:model="code"
                             wire:keydown.enter="confirmTwoFactorAuthentication" />
 
-                        <x-input-error for="code" class="mt-2" />
+                        <x-verbstream::input-error for="code" class="mt-2" />
                     </div>
                 @endif
             @endif
@@ -78,47 +77,47 @@
 
         <div class="mt-5">
             @if (! $this->enabled)
-                <x-confirms-password wire:then="enableTwoFactorAuthentication">
-                    <x-button type="button" wire:loading.attr="disabled">
+                <x-verbstream::confirms-password wire:then="enableTwoFactorAuthentication">
+                    <flux:button type="button" wire:loading.attr="disabled">
                         {{ __('Enable') }}
-                    </x-button>
-                </x-confirms-password>
+                    </flux:button>
+                </x-verbstream::confirms-password>
             @else
                 @if ($showingRecoveryCodes)
-                    <x-confirms-password wire:then="regenerateRecoveryCodes">
-                        <x-secondary-button class="me-3">
+                    <x-verbstream::confirms-password wire:then="regenerateRecoveryCodes">
+                        <flux:button class="me-3">
                             {{ __('Regenerate Recovery Codes') }}
-                        </x-secondary-button>
-                    </x-confirms-password>
+                        </flux:button>
+                    </x-verbstream::confirms-password>
                 @elseif ($showingConfirmation)
-                    <x-confirms-password wire:then="confirmTwoFactorAuthentication">
-                        <x-button type="button" class="me-3" wire:loading.attr="disabled">
+                    <x-verbstream::confirms-password wire:then="confirmTwoFactorAuthentication">
+                        <flux:button variant="primary" type="button" class="me-3" wire:loading.attr="disabled">
                             {{ __('Confirm') }}
-                        </x-button>
-                    </x-confirms-password>
+                        </flux:button>
+                    </x-verbstream::confirms-password>
                 @else
-                    <x-confirms-password wire:then="showRecoveryCodes">
-                        <x-secondary-button class="me-3">
+                    <x-verbstream::confirms-password wire:then="showRecoveryCodes">
+                        <flux:button type="submit" class="me-3">
                             {{ __('Show Recovery Codes') }}
-                        </x-secondary-button>
-                    </x-confirms-password>
+                        </flux:button>
+                    </x-verbstream::confirms-password>
                 @endif
 
                 @if ($showingConfirmation)
-                    <x-confirms-password wire:then="disableTwoFactorAuthentication">
-                        <x-secondary-button wire:loading.attr="disabled">
+                    <x-verbstream::confirms-password wire:then="disableTwoFactorAuthentication">
+                        <flux:button type="submit" wire:loading.attr="disabled">
                             {{ __('Cancel') }}
-                        </x-secondary-button>
-                    </x-confirms-password>
+                        </flux:button>
+                    </x-verbstream::confirms-password>
                 @else
-                    <x-confirms-password wire:then="disableTwoFactorAuthentication">
-                        <x-danger-button wire:loading.attr="disabled">
+                    <x-verbstream::confirms-password wire:then="disableTwoFactorAuthentication">
+                        <flux:button variant="primary" type="submit" wire:loading.attr="disabled">
                             {{ __('Disable') }}
-                        </x-danger-button>
-                    </x-confirms-password>
+                        </flux:button>
+                    </x-verbstream::confirms-password>
                 @endif
 
             @endif
         </div>
     </x-slot>
-</x-action-section>
+</x-verbstream::action-section>

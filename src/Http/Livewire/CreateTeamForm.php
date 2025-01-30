@@ -50,6 +50,6 @@ class CreateTeamForm extends Component
      */
     public function render()
     {
-        return view('teams.create-team-form');
+        return view('verbstream::teams.create-team-form');
     }
 }

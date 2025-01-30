@@ -1,4 +1,4 @@
-<x-action-section>
+<x-verbstream::action-section>
     <x-slot name="title">
         {{ __('Delete Team') }}
     </x-slot>
@@ -13,13 +13,13 @@
         </div>
 
         <div class="mt-5">
-            <x-danger-button wire:click="$toggle('confirmingTeamDeletion')" wire:loading.attr="disabled">
+            <flux:button variant="primary" wire:click="$toggle('confirmingTeamDeletion')" wire:loading.attr="disabled">
                 {{ __('Delete Team') }}
-            </x-danger-button>
+            </flux:button>
         </div>
 
         <!-- Delete Team Confirmation Modal -->
-        <x-confirmation-modal wire:model.live="confirmingTeamDeletion">
+        <x-verbstream::confirmation-modal wire:model.live="confirmingTeamDeletion">
             <x-slot name="title">
                 {{ __('Delete Team') }}
             </x-slot>
@@ -29,14 +29,14 @@
             </x-slot>
 
             <x-slot name="footer">
-                <x-secondary-button wire:click="$toggle('confirmingTeamDeletion')" wire:loading.attr="disabled">
+                <flux:button wire:click="$toggle('confirmingTeamDeletion')" wire:loading.attr="disabled">
                     {{ __('Cancel') }}
-                </x-secondary-button>
+                </flux:button>
 
-                <x-danger-button class="ms-3" wire:click="deleteTeam" wire:loading.attr="disabled">
+                <flux:button variant="primary" class="ms-3" wire:click="deleteTeam" wire:loading.attr="disabled">
                     {{ __('Delete Team') }}
-                </x-danger-button>
+                </flux:button>
             </x-slot>
-        </x-confirmation-modal>
+        </x-verbstream::confirmation-modal>
     </x-slot>
-</x-action-section>
+</x-verbstream::action-section>

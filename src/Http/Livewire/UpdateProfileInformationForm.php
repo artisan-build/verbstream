@@ -70,8 +70,6 @@ class UpdateProfileInformationForm extends Component
 
         $this->dispatch('saved');
 
-        $this->dispatch('refresh-navigation-menu');
-
         return null;
     }
 
@@ -83,8 +81,6 @@ class UpdateProfileInformationForm extends Component
     public function deleteProfilePhoto()
     {
         Auth::user()->deleteProfilePhoto();
-
-        $this->dispatch('refresh-navigation-menu');
     }
 
     /**
@@ -116,6 +112,6 @@ class UpdateProfileInformationForm extends Component
      */
     public function render()
     {
-        return view('profile.update-profile-information-form');
+        return view('verbstream::profile.update-profile-information-form');
     }
 }

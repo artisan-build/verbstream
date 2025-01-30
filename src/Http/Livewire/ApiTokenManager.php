@@ -205,6 +205,6 @@ class ApiTokenManager extends Component
      */
     public function render()
     {
-        return view('api.api-token-manager');
+        return view('verbstream::api.api-token-manager');
     }
 }

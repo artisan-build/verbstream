@@ -52,8 +52,6 @@ class UpdateTeamNameForm extends Component
         $updater->update($this->user, $this->team, $this->state);
 
         $this->dispatch('saved');
-
-        $this->dispatch('refresh-navigation-menu');
     }
 
     /**
@@ -73,6 +71,6 @@ class UpdateTeamNameForm extends Component
      */
     public function render()
     {
-        return view('teams.update-team-name-form');
+        return view('verbstream::teams.update-team-name-form');
     }
 }

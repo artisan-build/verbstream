@@ -135,6 +135,6 @@ class LogoutOtherBrowserSessionsForm extends Component
      */
     public function render()
     {
-        return view('profile.logout-other-browser-sessions-form');
+        return view('verbstream::profile.logout-other-browser-sessions-form');
     }
 }

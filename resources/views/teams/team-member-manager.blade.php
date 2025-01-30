@@ -1,10 +1,10 @@
 <div>
     @if (Gate::check('addTeamMember', $team))
-        <x-section-border/>
+        <flux:separator/>
 
         <!-- Add Team Member -->
         <div class="mt-10 sm:mt-0">
-            <x-form-section submit="addTeamMember">
+            <x-verbstream::form-section submit="addTeamMember">
                 <x-slot name="title">
                     {{ __('Add Team Member') }}
                 </x-slot>
@@ -22,17 +22,17 @@
 
                     <!-- Member Email -->
                     <div class="col-span-6 sm:col-span-4">
-                        <x-label for="email" value="{{ __('Email') }}"/>
-                        <x-input id="email" type="email" class="mt-1 block w-full"
+                        <x-verbstream::label for="email" value="{{ __('Email') }}"/>
+                        <flux:input id="email" type="email" class="mt-1 block w-full"
                                  wire:model="addTeamMemberForm.email"/>
-                        <x-input-error for="email" class="mt-2"/>
+                        <x-verbstream::input-error for="email" class="mt-2"/>
                     </div>
 
                     <!-- Role -->
                     @if (count($this->roles) > 0)
                         <div class="col-span-6 lg:col-span-4">
-                            <x-label for="role" value="{{ __('Role') }}"/>
-                            <x-input-error for="role" class="mt-2"/>
+                            <x-verbstream::label for="role" value="{{ __('Role') }}"/>
+                            <x-verbstream::input-error for="role" class="mt-2"/>
 
                             <div class="relative z-0 mt-1 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer">
                                 @foreach ($this->roles as $index => $role)
@@ -69,24 +69,24 @@
                 </x-slot>
 
                 <x-slot name="actions">
-                    <x-action-message class="me-3" on="saved">
+                    <x-verbstream::action-message class="me-3" on="saved">
                         {{ __('Added.') }}
-                    </x-action-message>
+                    </x-verbstream::action-message>
 
-                    <x-button>
+                    <flux:button type="submit">
                         {{ __('Add') }}
-                    </x-button>
+                    </flux:button>
                 </x-slot>
-            </x-form-section>
+            </x-verbstream::form-section>
         </div>
     @endif
 
     @if ($team->teamInvitations->isNotEmpty() && Gate::check('addTeamMember', $team))
-        <x-section-border/>
+        <flux:separator/>
 
         <!-- Team Member Invitations -->
         <div class="mt-10 sm:mt-0">
-            <x-action-section>
+            <x-verbstream::action-section>
                 <x-slot name="title">
                     {{ __('Pending Team Invitations') }}
                 </x-slot>
@@ -114,16 +114,16 @@
                         @endforeach
                     </div>
                 </x-slot>
-            </x-action-section>
+            </x-verbstream::action-section>
         </div>
     @endif
 
     @if ($team->users->isNotEmpty())
-        <x-section-border/>
+        <flux:separator/>
 
         <!-- Manage Team Members -->
         <div class="mt-10 sm:mt-0">
-            <x-action-section>
+            <x-verbstream::action-section>
                 <x-slot name="title">
                     {{ __('Team Members') }}
                 </x-slot>
@@ -175,12 +175,12 @@
                         @endforeach
                     </div>
                 </x-slot>
-            </x-action-section>
+            </x-verbstream::action-section>
         </div>
     @endif
 
     <!-- Role Management Modal -->
-    <x-dialog-modal wire:model.live="currentlyManagingRole">
+    <x-verbstream::dialog-modal wire:model.live="currentlyManagingRole">
         <x-slot name="title">
             {{ __('Manage Role') }}
         </x-slot>
@@ -218,18 +218,18 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-secondary-button wire:click="stopManagingRole" wire:loading.attr="disabled">
+            <flux:button wire:click="stopManagingRole" wire:loading.attr="disabled">
                 {{ __('Cancel') }}
-            </x-secondary-button>
+            </flux:button>
 
-            <x-button class="ms-3" wire:click="updateRole" wire:loading.attr="disabled">
+            <flux:button variant="primary" class="ms-3" wire:click="updateRole" wire:loading.attr="disabled">
                 {{ __('Save') }}
-            </x-button>
+            </flux:button>
         </x-slot>
-    </x-dialog-modal>
+    </x-verbstream::dialog-modal>
 
     <!-- Leave Team Confirmation Modal -->
-    <x-confirmation-modal wire:model.live="confirmingLeavingTeam">
+    <x-verbstream::confirmation-modal wire:model.live="confirmingLeavingTeam">
         <x-slot name="title">
             {{ __('Leave Team') }}
         </x-slot>
@@ -239,18 +239,18 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-secondary-button wire:click="$toggle('confirmingLeavingTeam')" wire:loading.attr="disabled">
+            <flux:button wire:click="$toggle('confirmingLeavingTeam')" wire:loading.attr="disabled">
                 {{ __('Cancel') }}
-            </x-secondary-button>
+            </flux:button>
 
-            <x-danger-button class="ms-3" wire:click="leaveTeam" wire:loading.attr="disabled">
+            <flux:button variant="primary" class="ms-3" wire:click="leaveTeam" wire:loading.attr="disabled">
                 {{ __('Leave') }}
-            </x-danger-button>
+            </flux:button>
         </x-slot>
-    </x-confirmation-modal>
+    </x-verbstream::confirmation-modal>
 
     <!-- Remove Team Member Confirmation Modal -->
-    <x-confirmation-modal wire:model.live="confirmingTeamMemberRemoval">
+    <x-verbstream::confirmation-modal wire:model.live="confirmingTeamMemberRemoval">
         <x-slot name="title">
             {{ __('Remove Team Member') }}
         </x-slot>
@@ -260,13 +260,13 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-secondary-button wire:click="$toggle('confirmingTeamMemberRemoval')" wire:loading.attr="disabled">
+            <flux:button wire:click="$toggle('confirmingTeamMemberRemoval')" wire:loading.attr="disabled">
                 {{ __('Cancel') }}
-            </x-secondary-button>
+            </flux:button>
 
-            <x-danger-button class="ms-3" wire:click="removeTeamMember" wire:loading.attr="disabled">
+            <flux:button variant="primary" class="ms-3" wire:click="removeTeamMember" wire:loading.attr="disabled">
                 {{ __('Remove') }}
-            </x-danger-button>
+            </flux:button>
         </x-slot>
-    </x-confirmation-modal>
+    </x-verbstream::confirmation-modal>
 </div>

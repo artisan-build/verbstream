@@ -2,17 +2,17 @@
 
 namespace ArtisanBuild\Verbstream\Providers;
 
-use App\Actions\Fortify\CreateNewUser;
-use App\Actions\Fortify\ResetUserPassword;
-use App\Actions\Fortify\UpdateUserPassword;
-use App\Actions\Fortify\UpdateUserProfileInformation;
-use App\Actions\Jetstream\AddTeamMember;
-use App\Actions\Jetstream\CreateTeam;
-use App\Actions\Jetstream\DeleteTeam;
-use App\Actions\Jetstream\DeleteUser;
-use App\Actions\Jetstream\InviteTeamMember;
-use App\Actions\Jetstream\RemoveTeamMember;
-use App\Actions\Jetstream\UpdateTeamName;
+use ArtisanBuild\Verbstream\Actions\AddTeamMember;
+use ArtisanBuild\Verbstream\Actions\CreateNewUser;
+use ArtisanBuild\Verbstream\Actions\CreateTeam;
+use ArtisanBuild\Verbstream\Actions\DeleteTeam;
+use ArtisanBuild\Verbstream\Actions\DeleteUser;
+use ArtisanBuild\Verbstream\Actions\InviteTeamMember;
+use ArtisanBuild\Verbstream\Actions\RemoveTeamMember;
+use ArtisanBuild\Verbstream\Actions\ResetUserPassword;
+use ArtisanBuild\Verbstream\Actions\UpdateTeamName;
+use ArtisanBuild\Verbstream\Actions\UpdateUserPassword;
+use ArtisanBuild\Verbstream\Actions\UpdateUserProfileInformation;
 use ArtisanBuild\Verbstream\Contracts\AddsTeamMembers;
 use ArtisanBuild\Verbstream\Contracts\CreatesTeams;
 use ArtisanBuild\Verbstream\Contracts\DeletesTeams;
@@ -26,7 +26,6 @@ use ArtisanBuild\Verbstream\Http\Livewire\CreateTeamForm;
 use ArtisanBuild\Verbstream\Http\Livewire\DeleteTeamForm;
 use ArtisanBuild\Verbstream\Http\Livewire\DeleteUserForm;
 use ArtisanBuild\Verbstream\Http\Livewire\LogoutOtherBrowserSessionsForm;
-use ArtisanBuild\Verbstream\Http\Livewire\NavigationMenu;
 use ArtisanBuild\Verbstream\Http\Livewire\TeamMemberManager;
 use ArtisanBuild\Verbstream\Http\Livewire\TwoFactorAuthenticationForm;
 use ArtisanBuild\Verbstream\Http\Livewire\UpdatePasswordForm;
@@ -87,7 +86,6 @@ class VerbstreamServiceProvider extends ServiceProvider
                 'banner' => $message,
             ]));
 
-        Livewire::component('navigation-menu', NavigationMenu::class);
         Livewire::component('profile.update-profile-information-form', UpdateProfileInformationForm::class);
         Livewire::component('profile.update-password-form', UpdatePasswordForm::class);
         Livewire::component('profile.two-factor-authentication-form', TwoFactorAuthenticationForm::class);

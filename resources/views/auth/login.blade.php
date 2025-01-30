@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-authentication-card>
+    <x-verbstream::authentication-card>
         @session('status')
             <div class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
                 {{ $value }}
@@ -29,5 +29,5 @@
                 </flux:button>
             </div>
         </form>
-    </x-authentication-card>
+    </x-verbstream::authentication-card>
 </x-app-layout>

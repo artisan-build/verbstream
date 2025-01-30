@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-authentication-card>
+    <x-verbstream::authentication-card>
 
         <flux:text>
             {{ __('Before continuing, please verify your email address by clicking on the link we just emailed to you. If you didn\'t receive the email, we will gladly send you another.') }}
@@ -37,5 +37,5 @@
                 </form>
             </div>
         </div>
-    </x-authentication-card>
+    </x-verbstream::authentication-card>
 </x-app-layout>

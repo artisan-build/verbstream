@@ -1,13 +1,13 @@
 <div class="md:col-span-1 flex justify-between">
     <div class="px-4 sm:px-0">
-        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">{{ $title }}</h3>
+        <flux:heading level="3" class="!text-lg font-medium">{{ $title }}</flux:heading>
 
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+        <flux:subheading>
             {{ $description }}
-        </p>
+        </flux:subheading>
     </div>
 
-    <div class="px-4 sm:px-0">
+    <flux:text>
         {{ $aside ?? '' }}
-    </div>
+    </flux:text>
 </div>
