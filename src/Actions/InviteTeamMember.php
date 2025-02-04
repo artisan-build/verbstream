@@ -5,14 +5,12 @@ namespace ArtisanBuild\Verbstream\Actions;
 use App\Models\Team;
 use App\Models\User;
 use ArtisanBuild\Verbstream\Contracts\InvitesTeamMembers;
-use ArtisanBuild\Verbstream\Events\InvitingTeamMember;
-use ArtisanBuild\Verbstream\Mail\TeamInvitation;
+use ArtisanBuild\Verbstream\Events\TeamMemberInvited;
 use ArtisanBuild\Verbstream\Rules\Role;
 use ArtisanBuild\Verbstream\Verbstream;
 use Closure;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -27,15 +25,11 @@ class InviteTeamMember implements InvitesTeamMembers
 
         $this->validate($team, $email, $role);
 
-        InvitingTeamMember::dispatch($team, $email, $role);
-
-        $invitation = $team->teamInvitations()->create([
-            'email' => $email,
-            'role' => $role,
-        ]);
-
-        /** @var \App\Models\TeamInvitation $invitation */
-        Mail::to($email)->send(new TeamInvitation($invitation));
+        TeamMemberInvited::fire(
+            team_id: $team->id,
+            email: $email,
+            role: $role,
+        );
     }
 
     /**

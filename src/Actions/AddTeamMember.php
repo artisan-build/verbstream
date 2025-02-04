@@ -5,8 +5,6 @@ namespace ArtisanBuild\Verbstream\Actions;
 use App\Models\Team;
 use App\Models\User;
 use ArtisanBuild\Verbstream\Contracts\AddsTeamMembers;
-use ArtisanBuild\Verbstream\Events\AddingTeamMember;
-use ArtisanBuild\Verbstream\Events\TeamMemberAdded;
 use ArtisanBuild\Verbstream\Rules\Role;
 use ArtisanBuild\Verbstream\Verbstream;
 use Closure;
@@ -27,13 +25,9 @@ class AddTeamMember implements AddsTeamMembers
 
         $newTeamMember = Verbstream::findUserByEmailOrFail($email);
 
-        AddingTeamMember::dispatch($team, $newTeamMember);
-
         $team->users()->attach(
             $newTeamMember, ['role' => $role]
         );
-
-        TeamMemberAdded::dispatch($team, $newTeamMember);
     }
 
     /**

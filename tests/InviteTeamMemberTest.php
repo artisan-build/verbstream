@@ -1,14 +1,18 @@
 <?php
 
 use App\Models\User;
+use ArtisanBuild\Verbstream\Events\TeamMemberInvited;
 use ArtisanBuild\Verbstream\Features;
 use ArtisanBuild\Verbstream\Http\Livewire\TeamMemberManager;
 use ArtisanBuild\Verbstream\Mail\TeamInvitation;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
+use Thunk\Verbs\Facades\Verbs;
 
 test('team members can be invited to team', function (): void {
     Mail::fake();
+    Verbs::fake();
+    Verbs::assertNothingCommitted();
 
     $this->actingAs($user = User::factory()->withPersonalTeam()->create());
 
@@ -17,6 +21,8 @@ test('team members can be invited to team', function (): void {
             'email' => 'test@example.com',
             'role' => 'admin',
         ])->call('addTeamMember');
+
+    Verbs::assertCommitted(TeamMemberInvited::class);
 
     Mail::assertSent(TeamInvitation::class);
 

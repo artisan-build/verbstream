@@ -5,7 +5,6 @@ namespace ArtisanBuild\Verbstream\Actions;
 use App\Models\Team;
 use App\Models\User;
 use ArtisanBuild\Verbstream\Contracts\RemovesTeamMembers;
-use ArtisanBuild\Verbstream\Events\TeamMemberRemoved;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
@@ -23,7 +22,6 @@ class RemoveTeamMember implements RemovesTeamMembers
 
         $team->removeUser($teamMember);
 
-        TeamMemberRemoved::dispatch($team, $teamMember);
     }
 
     /**

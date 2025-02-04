@@ -5,7 +5,6 @@ namespace ArtisanBuild\Verbstream\Actions;
 use App\Models\Team;
 use App\Models\User;
 use ArtisanBuild\Verbstream\Contracts\CreatesTeams;
-use ArtisanBuild\Verbstream\Events\AddingTeam;
 use ArtisanBuild\Verbstream\Verbstream;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
@@ -25,8 +24,6 @@ class CreateTeam implements CreatesTeams
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
         ])->validateWithBag('createTeam');
-
-        AddingTeam::dispatch($user);
 
         $user->switchTeam($team = $user->ownedTeams()->create([
             'name' => $input['name'],
