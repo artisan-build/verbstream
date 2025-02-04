@@ -6,6 +6,7 @@
     "require": {
         "php": "^8.2.0",
         "ext-json": "*",
+        "artisan-build/adverbs": "*",
         "hirethunk/verbs": "*",
         "illuminate/console": "^11.0",
         "illuminate/support": "^11.0",

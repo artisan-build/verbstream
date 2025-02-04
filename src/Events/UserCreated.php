@@ -5,9 +5,6 @@ namespace ArtisanBuild\Verbstream\Events;
 use App\Models\Team;
 use App\Models\User;
 use App\States\UserState;
-use ArtisanBuild\Verbstream\Adverbs\DispatchesAsLaravelEvent;
-use ArtisanBuild\Verbstream\Adverbs\VerbsEvent;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Thunk\Verbs\Attributes\Autodiscovery\StateId;
@@ -15,8 +12,6 @@ use Thunk\Verbs\Event;
 
 class UserCreated extends Event
 {
-    use DispatchesAsLaravelEvent;
-
     #[StateId(UserState::class)]
     public ?int $user_id = null;
 
@@ -31,8 +26,6 @@ class UserCreated extends Event
         $state->email = $this->email;
         $state->last_login = Date::now();
     }
-
-
 
     public function handle()
     {

@@ -23,8 +23,10 @@ class TeamMemberInvited extends Event
             'role' => $this->role,
         ]);
 
-        Verbs::unlessReplaying(fn () => /** @var \App\Models\TeamInvitation $invitation */
-            Mail::to($this->email)->send(new TeamInvitation($invitation)));
+        Verbs::unlessReplaying(function () use ($invitation): void {
+            /** @phpstan-ignore-next-line  */
+            Mail::to($this->email)->send(new TeamInvitation($invitation));
+        });
 
     }
 }
