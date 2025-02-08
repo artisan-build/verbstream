@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\ValidationException;
 use Thunk\Verbs\Facades\Verbs;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Verbs::commitImmediately();
 });
 
-test('user can update profile information', function () {
+test('user can update profile information', function (): void {
     $user = User::factory()->create([
         'name' => 'Old Name',
         'email' => 'old@example.com',
@@ -34,7 +34,7 @@ test('user can update profile information', function () {
         ->and($user->fresh()->email)->toBe('new@example.com');
 });
 
-test('email verification is sent when email changes', function () {
+test('email verification is sent when email changes', function (): void {
     Notification::fake();
 
     $user = User::factory()->create([
@@ -51,7 +51,7 @@ test('email verification is sent when email changes', function () {
     Notification::assertSentTo($user, VerifyEmail::class);
 });
 
-test('email verification is not sent when email remains the same', function () {
+test('email verification is not sent when email remains the same', function (): void {
     Notification::fake();
 
     $user = User::factory()->create([
@@ -72,7 +72,7 @@ test('email verification is not sent when email remains the same', function () {
     expect($user->fresh()->email_verified_at)->not->toBeNull();
 });
 
-test('cannot use email that is already taken', function () {
+test('cannot use email that is already taken', function (): void {
     $user1 = User::factory()->create(['email' => 'taken@example.com']);
     $user2 = User::factory()->create(['email' => 'old@example.com']);
 
@@ -86,7 +86,7 @@ test('cannot use email that is already taken', function () {
     expect($user2->fresh()->email)->toBe('old@example.com');
 });
 
-test('validates email format', function () {
+test('validates email format', function (): void {
     $user = User::factory()->create();
 
     expect(fn () => ProfileInformationUpdated::commit(

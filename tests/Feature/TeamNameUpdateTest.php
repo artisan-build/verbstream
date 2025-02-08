@@ -6,11 +6,11 @@ use ArtisanBuild\Verbstream\Events\TeamNameUpdated;
 use Illuminate\Auth\Access\AuthorizationException;
 use Thunk\Verbs\Facades\Verbs;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Verbs::commitImmediately();
 });
 
-test('it updates a team name', function () {
+test('it updates a team name', function (): void {
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id]);
 
@@ -30,7 +30,7 @@ test('it updates a team name', function () {
     expect($team->fresh()->name)->toBe('Updated Team Name');
 });
 
-test('it prevents unauthorized users from updating team names', function () {
+test('it prevents unauthorized users from updating team names', function (): void {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
     $otherUser = User::factory()->create();

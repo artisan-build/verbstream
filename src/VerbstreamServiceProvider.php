@@ -13,6 +13,7 @@ class VerbstreamServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
+    #[\Override]
     public function register(): void
     {
         //

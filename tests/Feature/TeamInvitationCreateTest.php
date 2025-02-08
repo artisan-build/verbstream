@@ -9,12 +9,12 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 use Thunk\Verbs\Facades\Verbs;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Verbs::commitImmediately();
     Gate::define('addTeamMember', fn (User $user, Team $team) => $team->user_id === $user->id);
 });
 
-test('team owner can create invitation', function () {
+test('team owner can create invitation', function (): void {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
 
@@ -35,7 +35,7 @@ test('team owner can create invitation', function () {
         ->and($invitation->email)->toBe('newmember@example.com');
 });
 
-test('non-owner cannot create invitations', function () {
+test('non-owner cannot create invitations', function (): void {
     $owner = User::factory()->create();
     $nonOwner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
@@ -51,7 +51,7 @@ test('non-owner cannot create invitations', function () {
     expect(TeamInvitation::where('team_id', $team->id)->count())->toBe(0);
 });
 
-test('cannot create invitation for user already on team', function () {
+test('cannot create invitation for user already on team', function (): void {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
     $existingMember = User::factory()->create();
@@ -68,7 +68,7 @@ test('cannot create invitation for user already on team', function () {
     expect(TeamInvitation::where('team_id', $team->id)->count())->toBe(0);
 });
 
-test('cannot create duplicate invitations', function () {
+test('cannot create duplicate invitations', function (): void {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
 
@@ -92,7 +92,7 @@ test('cannot create duplicate invitations', function () {
     expect(TeamInvitation::where('team_id', $team->id)->count())->toBe(1);
 });
 
-test('validates role input', function () {
+test('validates role input', function (): void {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
 

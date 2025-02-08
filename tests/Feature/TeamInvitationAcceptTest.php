@@ -6,11 +6,11 @@ use ArtisanBuild\Verbstream\Events\TeamInvitationAccepted;
 use ArtisanBuild\Verbstream\Models\TeamInvitation;
 use Thunk\Verbs\Facades\Verbs;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Verbs::commitImmediately();
 });
 
-test('user can accept team invitation', function () {
+test('user can accept team invitation', function (): void {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
     $invitedUser = User::factory()->create();
@@ -39,7 +39,7 @@ test('user can accept team invitation', function () {
     expect($invitedUser->fresh()->current_team_id)->toBe($team->id);
 });
 
-test('user cannot accept invitation meant for someone else', function () {
+test('user cannot accept invitation meant for someone else', function (): void {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
     $wrongUser = User::factory()->create();
@@ -63,7 +63,7 @@ test('user cannot accept invitation meant for someone else', function () {
     expect(TeamInvitation::find($invitation->id))->not->toBeNull();
 });
 
-test('cannot accept invitation for non-existent team', function () {
+test('cannot accept invitation for non-existent team', function (): void {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
     $invitedUser = User::factory()->create();
@@ -85,7 +85,7 @@ test('cannot accept invitation for non-existent team', function () {
     ))->toThrow(\RuntimeException::class, 'Invalid invitation or user.');
 });
 
-test('cannot accept invitation if already on team', function () {
+test('cannot accept invitation if already on team', function (): void {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
     $existingMember = User::factory()->create();
@@ -111,7 +111,7 @@ test('cannot accept invitation if already on team', function () {
     expect(TeamInvitation::find($invitation->id))->toBeNull();
 });
 
-test('does not change current team if user already has one', function () {
+test('does not change current team if user already has one', function (): void {
     $owner = User::factory()->create();
     $team1 = Team::factory()->create(['user_id' => $owner->id]);
     $team2 = Team::factory()->create(['user_id' => $owner->id]);

@@ -40,7 +40,7 @@ class UserCreated extends Event
             // Create personal team
             $team = Team::forceCreate([
                 'user_id' => $user->id,
-                'name' => explode(' ', $user->name, 2)[0]."'s ".config('verbstream.team_label')->value,
+                'name' => explode(' ', (string) $user->name, 2)[0]."'s ".config('verbstream.team_label')->value,
                 'personal_team' => true,
             ]);
 

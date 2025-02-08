@@ -8,12 +8,12 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 use Thunk\Verbs\Facades\Verbs;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Verbs::commitImmediately();
     Gate::define('addTeamMember', fn (User $user, Team $team) => $team->user_id === $user->id);
 });
 
-test('team owner can add a new member', function () {
+test('team owner can add a new member', function (): void {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
     $newMember = User::factory()->create();
@@ -30,7 +30,7 @@ test('team owner can add a new member', function () {
         ->toBe('member');
 });
 
-test('non-owner cannot add team members', function () {
+test('non-owner cannot add team members', function (): void {
     $owner = User::factory()->create();
     $nonOwner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
@@ -44,7 +44,7 @@ test('non-owner cannot add team members', function () {
     ))->toThrow(AuthorizationException::class);
 });
 
-test('cannot add user that does not exist', function () {
+test('cannot add user that does not exist', function (): void {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
 
@@ -56,7 +56,7 @@ test('cannot add user that does not exist', function () {
     ))->toThrow(\RuntimeException::class, 'User not found.');
 });
 
-test('cannot add user that is already on the team', function () {
+test('cannot add user that is already on the team', function (): void {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
     $existingMember = User::factory()->create();
@@ -70,7 +70,7 @@ test('cannot add user that is already on the team', function () {
     ))->toThrow(\RuntimeException::class, 'User is already on the team.');
 });
 
-test('validates role input', function () {
+test('validates role input', function (): void {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
     $newMember = User::factory()->create();

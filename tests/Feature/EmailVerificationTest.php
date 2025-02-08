@@ -6,12 +6,12 @@ use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\Notification;
 use Thunk\Verbs\Facades\Verbs;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Verbs::commitImmediately();
     Notification::fake();
 });
 
-test('unverified user can request verification email resend', function () {
+test('unverified user can request verification email resend', function (): void {
     Notification::fake();
 
     $user = User::factory()->unverified()->create();
@@ -24,7 +24,7 @@ test('unverified user can request verification email resend', function () {
     Notification::assertSentTo($user, VerifyEmail::class);
 });
 
-test('verified user cannot request verification email resend', function () {
+test('verified user cannot request verification email resend', function (): void {
     Notification::fake();
 
     $user = User::factory()->create();
@@ -37,13 +37,13 @@ test('verified user cannot request verification email resend', function () {
     Notification::assertNothingSent();
 });
 
-test('guest cannot request verification email resend', function () {
+test('guest cannot request verification email resend', function (): void {
     $response = $this->post(route('verification.send'));
 
     $response->assertRedirect(route('login'));
 });
 
-test('it sends verification email when manually requested', function () {
+test('it sends verification email when manually requested', function (): void {
     $user = User::factory()->unverified()->create();
 
     EmailVerificationNotificationSent::fire(user_id: $user->id);
@@ -52,7 +52,7 @@ test('it sends verification email when manually requested', function () {
     Notification::assertSentTo($user, VerifyEmail::class, 1);
 });
 
-test('it does not send verification email to already verified users', function () {
+test('it does not send verification email to already verified users', function (): void {
     $user = User::factory()->create([
         'email_verified_at' => now(),
     ]);

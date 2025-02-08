@@ -6,11 +6,11 @@ use ArtisanBuild\Verbstream\Events\TeamDeleted;
 use Illuminate\Auth\Access\AuthorizationException;
 use Thunk\Verbs\Facades\Verbs;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Verbs::commitImmediately();
 });
 
-test('it deletes a team and cleans up relationships', function () {
+test('it deletes a team and cleans up relationships', function (): void {
     $owner = User::factory()->create();
     $member = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
@@ -37,7 +37,7 @@ test('it deletes a team and cleans up relationships', function () {
         ->and($member->teams)->toHaveCount(0);
 });
 
-test('it prevents unauthorized users from deleting teams', function () {
+test('it prevents unauthorized users from deleting teams', function (): void {
     $owner = User::factory()->create();
     $otherUser = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);

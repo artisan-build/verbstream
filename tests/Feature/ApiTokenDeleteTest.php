@@ -10,12 +10,12 @@ use Illuminate\Support\Facades\Config;
 use Laravel\Sanctum\PersonalAccessToken;
 use Thunk\Verbs\Facades\Verbs;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Verbs::commitImmediately();
     Config::set('verbstream.api_token_permissions', ['read', 'write', 'delete']);
 });
 
-test('user can delete their API token', function () {
+test('user can delete their API token', function (): void {
     $user = User::factory()->create();
 
     // Create token
@@ -35,7 +35,7 @@ test('user can delete their API token', function () {
     expect(PersonalAccessToken::find($token->accessToken->id))->toBeNull();
 });
 
-test('cannot delete token belonging to another user', function () {
+test('cannot delete token belonging to another user', function (): void {
     $user1 = User::factory()->create();
     $user2 = User::factory()->create();
 
@@ -54,7 +54,7 @@ test('cannot delete token belonging to another user', function () {
     expect(PersonalAccessToken::find($token->accessToken->id))->not->toBeNull();
 });
 
-test('cannot delete non-existent token', function () {
+test('cannot delete non-existent token', function (): void {
     $user = User::factory()->create();
 
     expect(fn () => ApiTokenDeleted::fire(

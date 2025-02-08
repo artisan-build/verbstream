@@ -5,11 +5,11 @@ use App\Models\User;
 use ArtisanBuild\Verbstream\Events\TeamCreated;
 use Thunk\Verbs\Facades\Verbs;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Verbs::commitImmediately();
 });
 
-test('it creates a team and sets up relationships', function () {
+test('it creates a team and sets up relationships', function (): void {
     $user = User::factory()->create();
 
     $team = TeamCreated::commit(

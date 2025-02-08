@@ -6,12 +6,12 @@ use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\Notification;
 use Thunk\Verbs\Facades\Verbs;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Verbs::commitImmediately();
     Notification::fake();
 });
 
-test('it updates profile information', function () {
+test('it updates profile information', function (): void {
     $user = User::factory()->create();
 
     ProfileInformationUpdated::commit(
@@ -30,7 +30,7 @@ test('it updates profile information', function () {
     Notification::assertSentTo($user, VerifyEmail::class, 1);
 });
 
-test('it does not send verification email when email remains unchanged', function () {
+test('it does not send verification email when email remains unchanged', function (): void {
     $user = User::factory()->create();
     $originalEmail = $user->email;
 

@@ -10,12 +10,12 @@ use Illuminate\Validation\ValidationException;
 use Laravel\Sanctum\PersonalAccessToken;
 use Thunk\Verbs\Facades\Verbs;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Verbs::commitImmediately();
     Config::set('verbstream.api_token_permissions', ['read', 'write', 'delete']);
 });
 
-test('user can update API token permissions', function () {
+test('user can update API token permissions', function (): void {
     $user = User::factory()->create();
 
     // Create initial token
@@ -39,7 +39,7 @@ test('user can update API token permissions', function () {
         ->and($updatedToken->tokenable_id)->toBe($user->id);
 });
 
-test('validates abilities are required', function () {
+test('validates abilities are required', function (): void {
     $user = User::factory()->create();
 
     $token = ApiTokenCreated::commit(
@@ -58,7 +58,7 @@ test('validates abilities are required', function () {
     expect($token->accessToken->fresh()->abilities)->toBe(['read']);
 });
 
-test('validates abilities are valid', function () {
+test('validates abilities are valid', function (): void {
     $user = User::factory()->create();
 
     $token = ApiTokenCreated::commit(
@@ -77,7 +77,7 @@ test('validates abilities are valid', function () {
     expect($token->accessToken->fresh()->abilities)->toBe(['read']);
 });
 
-test('cannot update token belonging to another user', function () {
+test('cannot update token belonging to another user', function (): void {
     $user1 = User::factory()->create();
     $user2 = User::factory()->create();
 

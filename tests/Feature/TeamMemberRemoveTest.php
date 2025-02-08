@@ -7,12 +7,12 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
 use Thunk\Verbs\Facades\Verbs;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Verbs::commitImmediately();
     Gate::define('removeTeamMember', fn (User $user, Team $team) => $team->user_id === $user->id);
 });
 
-test('team owner can remove a member', function () {
+test('team owner can remove a member', function (): void {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
     $member = User::factory()->create();
@@ -28,7 +28,7 @@ test('team owner can remove a member', function () {
         ->and($team->users)->toHaveCount(0);
 });
 
-test('non-owner cannot remove team members', function () {
+test('non-owner cannot remove team members', function (): void {
     $owner = User::factory()->create();
     $nonOwner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
@@ -46,7 +46,7 @@ test('non-owner cannot remove team members', function () {
         ->and($team->users)->toHaveCount(1);
 });
 
-test('cannot remove non-existent user', function () {
+test('cannot remove non-existent user', function (): void {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
 
@@ -57,7 +57,7 @@ test('cannot remove non-existent user', function () {
     ))->toThrow(\RuntimeException::class, 'User not found.');
 });
 
-test('cannot remove user not on team', function () {
+test('cannot remove user not on team', function (): void {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
     $nonMember = User::factory()->create();
@@ -69,7 +69,7 @@ test('cannot remove user not on team', function () {
     ))->toThrow(\RuntimeException::class, 'User is not a member of the team.');
 });
 
-test('cannot remove team owner', function () {
+test('cannot remove team owner', function (): void {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
 
@@ -80,7 +80,7 @@ test('cannot remove team owner', function () {
     ))->toThrow(\RuntimeException::class, 'Cannot remove team owner.');
 });
 
-test('clears current team when removing member from their current team', function () {
+test('clears current team when removing member from their current team', function (): void {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
     $member = User::factory()->create(['current_team_id' => $team->id]);

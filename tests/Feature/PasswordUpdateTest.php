@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Thunk\Verbs\Facades\Verbs;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Verbs::commitImmediately();
 });
 
-test('user can update their password', function () {
+test('user can update their password', function (): void {
     $user = User::factory()->create([
         'password' => Hash::make('current-password'),
     ]);
@@ -29,7 +29,7 @@ test('user can update their password', function () {
         ->and(Hash::check('current-password', $user->fresh()->password))->toBeFalse();
 });
 
-test('cannot update password with incorrect current password', function () {
+test('cannot update password with incorrect current password', function (): void {
     $user = User::factory()->create([
         'password' => Hash::make('current-password'),
     ]);
@@ -45,7 +45,7 @@ test('cannot update password with incorrect current password', function () {
     expect(Hash::check('current-password', $user->fresh()->password))->toBeTrue();
 });
 
-test('validates password confirmation matches', function () {
+test('validates password confirmation matches', function (): void {
     $user = User::factory()->create([
         'password' => Hash::make('current-password'),
     ]);
@@ -61,7 +61,7 @@ test('validates password confirmation matches', function () {
     expect(Hash::check('current-password', $user->fresh()->password))->toBeTrue();
 });
 
-test('validates password minimum length', function () {
+test('validates password minimum length', function (): void {
     $user = User::factory()->create([
         'password' => Hash::make('current-password'),
     ]);

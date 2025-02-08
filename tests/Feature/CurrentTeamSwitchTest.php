@@ -6,11 +6,11 @@ use ArtisanBuild\Verbstream\Events\CurrentTeamSwitched;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Thunk\Verbs\Facades\Verbs;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Verbs::commitImmediately();
 });
 
-test('it switches the current team for a user', function () {
+test('it switches the current team for a user', function (): void {
     $user = User::factory()->create();
     $team1 = Team::factory()->create(['user_id' => $user->id]);
     $team2 = Team::factory()->create(['user_id' => $user->id]);
@@ -29,7 +29,7 @@ test('it switches the current team for a user', function () {
         ->and($user->fresh()->current_team_id)->toBe($team2->id);
 });
 
-test('it prevents switching to a team the user does not belong to', function () {
+test('it prevents switching to a team the user does not belong to', function (): void {
     $user = User::factory()->create();
     $otherTeam = Team::factory()->create();
 

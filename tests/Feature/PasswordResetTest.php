@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
 use Thunk\Verbs\Facades\Verbs;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Verbs::commitImmediately();
 });
 
-test('user can reset their password', function () {
+test('user can reset their password', function (): void {
     Event::fake([PasswordResetEvent::class]);
 
     $user = User::factory()->create([
@@ -41,7 +41,7 @@ test('user can reset their password', function () {
     Event::assertDispatched(PasswordResetEvent::class);
 });
 
-test('cannot reset password with invalid token', function () {
+test('cannot reset password with invalid token', function (): void {
     $user = User::factory()->create([
         'email' => 'test@example.com',
         'password' => Hash::make('old-password'),
@@ -58,7 +58,7 @@ test('cannot reset password with invalid token', function () {
     expect(Hash::check('old-password', $user->fresh()->password))->toBeTrue();
 });
 
-test('validates password confirmation matches', function () {
+test('validates password confirmation matches', function (): void {
     $user = User::factory()->create([
         'email' => 'test@example.com',
         'password' => Hash::make('old-password'),
@@ -77,7 +77,7 @@ test('validates password confirmation matches', function () {
     expect(Hash::check('old-password', $user->fresh()->password))->toBeTrue();
 });
 
-test('validates password minimum length', function () {
+test('validates password minimum length', function (): void {
     $user = User::factory()->create([
         'email' => 'test@example.com',
         'password' => Hash::make('old-password'),

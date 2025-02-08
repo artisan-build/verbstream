@@ -13,11 +13,11 @@ use Laravel\Fortify\Actions\GenerateNewRecoveryCodes;
 use Laravel\Fortify\RecoveryCode;
 use Thunk\Verbs\Facades\Verbs;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Verbs::commitImmediately();
 });
 
-test('user can enable two factor authentication', function () {
+test('user can enable two factor authentication', function (): void {
     $user = User::factory()->create([
         'two_factor_secret' => null,
         'two_factor_confirmed_at' => null,
@@ -47,7 +47,7 @@ test('user can enable two factor authentication', function () {
         ->and($codes)->toBe($recoveryCodes);
 });
 
-test('cannot enable two factor authentication when already enabled', function () {
+test('cannot enable two factor authentication when already enabled', function (): void {
     $user = User::factory()->create([
         'two_factor_secret' => 'existing-secret',
         'two_factor_confirmed_at' => now(),
@@ -63,7 +63,7 @@ test('cannot enable two factor authentication when already enabled', function ()
         ->and($user->fresh()->two_factor_confirmed_at)->not->toBeNull();
 });
 
-test('user can confirm two factor authentication', function () {
+test('user can confirm two factor authentication', function (): void {
     $user = User::factory()->create([
         'two_factor_secret' => 'test-secret',
         'two_factor_confirmed_at' => null,
@@ -86,7 +86,7 @@ test('user can confirm two factor authentication', function () {
     expect($user->fresh()->two_factor_confirmed_at)->not->toBeNull();
 });
 
-test('cannot confirm two factor authentication when not enabled', function () {
+test('cannot confirm two factor authentication when not enabled', function (): void {
     $user = User::factory()->create([
         'two_factor_secret' => null,
         'two_factor_confirmed_at' => null,
@@ -98,7 +98,7 @@ test('cannot confirm two factor authentication when not enabled', function () {
     ))->toThrow(RuntimeException::class, 'Two factor authentication is not enabled.');
 });
 
-test('cannot confirm two factor authentication when already confirmed', function () {
+test('cannot confirm two factor authentication when already confirmed', function (): void {
     $user = User::factory()->create([
         'two_factor_secret' => 'test-secret',
         'two_factor_confirmed_at' => now(),
@@ -110,7 +110,7 @@ test('cannot confirm two factor authentication when already confirmed', function
     ))->toThrow(RuntimeException::class, 'Two factor authentication is already confirmed.');
 });
 
-test('user can disable two factor authentication', function () {
+test('user can disable two factor authentication', function (): void {
     $user = User::factory()->create([
         'two_factor_secret' => 'test-secret',
         'two_factor_confirmed_at' => now(),
@@ -128,7 +128,7 @@ test('user can disable two factor authentication', function () {
         ->and($user->two_factor_recovery_codes)->toBeNull();
 });
 
-test('cannot disable two factor authentication when not enabled', function () {
+test('cannot disable two factor authentication when not enabled', function (): void {
     $user = User::factory()->create([
         'two_factor_secret' => null,
         'two_factor_confirmed_at' => null,
@@ -139,7 +139,7 @@ test('cannot disable two factor authentication when not enabled', function () {
     ))->toThrow(RuntimeException::class, 'Two factor authentication is not enabled.');
 });
 
-test('user can regenerate recovery codes', function () {
+test('user can regenerate recovery codes', function (): void {
     $user = User::factory()->create([
         'two_factor_secret' => 'test-secret',
         'two_factor_confirmed_at' => now(),
@@ -164,7 +164,7 @@ test('user can regenerate recovery codes', function () {
         ->and($regeneratedCodes)->toBe($newCodes);
 });
 
-test('cannot regenerate recovery codes when 2FA is not enabled', function () {
+test('cannot regenerate recovery codes when 2FA is not enabled', function (): void {
     $user = User::factory()->create([
         'two_factor_secret' => null,
         'two_factor_confirmed_at' => null,

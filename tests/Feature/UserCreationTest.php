@@ -8,12 +8,12 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Thunk\Verbs\Facades\Verbs;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Verbs::commitImmediately();
     Notification::fake();
 });
 
-test('it creates a user with personal team', function () {
+test('it creates a user with personal team', function (): void {
     $user = UserCreated::commit(
         name: 'Test User',
         email: 'test@example.com',

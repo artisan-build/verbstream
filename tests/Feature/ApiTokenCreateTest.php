@@ -7,12 +7,12 @@ use Illuminate\Validation\ValidationException;
 use Laravel\Sanctum\PersonalAccessToken;
 use Thunk\Verbs\Facades\Verbs;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Verbs::commitImmediately();
     Config::set('verbstream.api_token_permissions', ['read', 'write', 'delete']);
 });
 
-test('user can create API token', function () {
+test('user can create API token', function (): void {
     $user = User::factory()->create();
 
     $token = ApiTokenCreated::commit(
@@ -32,7 +32,7 @@ test('user can create API token', function () {
     expect(PersonalAccessToken::where('tokenable_id', $user->id)->count())->toBe(1);
 });
 
-test('validates token name', function () {
+test('validates token name', function (): void {
     $user = User::factory()->create();
 
     expect(fn () => ApiTokenCreated::commit(
@@ -45,7 +45,7 @@ test('validates token name', function () {
     expect(PersonalAccessToken::where('tokenable_id', $user->id)->count())->toBe(0);
 });
 
-test('validates abilities are required', function () {
+test('validates abilities are required', function (): void {
     $user = User::factory()->create();
 
     expect(fn () => ApiTokenCreated::commit(
@@ -58,7 +58,7 @@ test('validates abilities are required', function () {
     expect(PersonalAccessToken::where('tokenable_id', $user->id)->count())->toBe(0);
 });
 
-test('validates abilities are valid', function () {
+test('validates abilities are valid', function (): void {
     $user = User::factory()->create();
 
     expect(fn () => ApiTokenCreated::commit(

@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\Hash;
 use RuntimeException;
 use Thunk\Verbs\Facades\Verbs;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Verbs::commitImmediately();
 });
 
-test('user can logout other browser sessions', function () {
+test('user can logout other browser sessions', function (): void {
     $user = User::factory()->create([
         'password' => Hash::make('correct-password'),
     ]);
@@ -63,7 +63,7 @@ test('user can logout other browser sessions', function () {
         ->and($remainingSessions->first()->id)->toBe('session-2');
 });
 
-test('cannot logout sessions with incorrect password', function () {
+test('cannot logout sessions with incorrect password', function (): void {
     $user = User::factory()->create([
         'password' => Hash::make('correct-password'),
     ]);
@@ -88,7 +88,7 @@ test('cannot logout sessions with incorrect password', function () {
     expect(DB::table('sessions')->where('user_id', $user->id)->count())->toBe(1);
 });
 
-test('can logout all sessions including current one', function () {
+test('can logout all sessions including current one', function (): void {
     $user = User::factory()->create([
         'password' => Hash::make('correct-password'),
     ]);

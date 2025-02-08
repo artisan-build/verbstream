@@ -14,16 +14,8 @@ use Thunk\Verbs\Event;
 
 class TeamInvitationAccepted extends Event
 {
-    #[StateId(TeamState::class)]
-    public int $team_id;
-
-    public function __construct(
-        int $team_id,
-        public readonly int $invitation_id,
-        public readonly int $user_id,
-    ) {
-        $this->team_id = $team_id;
-    }
+    public function __construct(#[StateId(TeamState::class)]
+        public int $team_id, public readonly int $invitation_id, public readonly int $user_id) {}
 
     public function apply(TeamState $state): void
     {

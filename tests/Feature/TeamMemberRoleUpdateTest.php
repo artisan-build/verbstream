@@ -8,12 +8,12 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 use Thunk\Verbs\Facades\Verbs;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Verbs::commitImmediately();
     Gate::define('updateTeamMember', fn (User $user, Team $team) => $team->user_id === $user->id);
 });
 
-test('team owner can update member role', function () {
+test('team owner can update member role', function (): void {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
     $member = User::factory()->create();
@@ -30,7 +30,7 @@ test('team owner can update member role', function () {
         ->toBe('admin');
 });
 
-test('non-owner cannot update member roles', function () {
+test('non-owner cannot update member roles', function (): void {
     $owner = User::factory()->create();
     $nonOwner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
@@ -49,7 +49,7 @@ test('non-owner cannot update member roles', function () {
         ->toBe('member');
 });
 
-test('cannot update role of non-existent user', function () {
+test('cannot update role of non-existent user', function (): void {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
 
@@ -61,7 +61,7 @@ test('cannot update role of non-existent user', function () {
     ))->toThrow(\RuntimeException::class, 'User not found.');
 });
 
-test('cannot update role of user not on team', function () {
+test('cannot update role of user not on team', function (): void {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
     $nonMember = User::factory()->create();
@@ -74,7 +74,7 @@ test('cannot update role of user not on team', function () {
     ))->toThrow(\RuntimeException::class, 'User is not a member of the team.');
 });
 
-test('cannot update role of team owner', function () {
+test('cannot update role of team owner', function (): void {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
 
@@ -86,7 +86,7 @@ test('cannot update role of team owner', function () {
     ))->toThrow(\RuntimeException::class, 'Cannot change role of team owner.');
 });
 
-test('validates role input', function () {
+test('validates role input', function (): void {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
     $member = User::factory()->create();

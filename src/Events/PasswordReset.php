@@ -55,7 +55,7 @@ class PasswordReset extends Event
                 'password_confirmation' => $this->password_confirmation,
                 'token' => $this->token,
             ],
-            function (User $user) {
+            function (User $user): void {
                 $user->forceFill([
                     'password' => Hash::make($this->password),
                     'remember_token' => Str::random(60),

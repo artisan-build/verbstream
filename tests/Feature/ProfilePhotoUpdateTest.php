@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Thunk\Verbs\Facades\Verbs;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Verbs::commitImmediately();
     Storage::fake('public');
 });
 
-test('user can update profile photo', function () {
+test('user can update profile photo', function (): void {
     $user = User::factory()->create();
     $photo = UploadedFile::fake()->image('photo.jpg');
 
@@ -31,7 +31,7 @@ test('user can update profile photo', function () {
         ->and($user->fresh()->profile_photo_path)->toBe($updatedUser->profile_photo_path);
 });
 
-test('old photo is deleted when updating', function () {
+test('old photo is deleted when updating', function (): void {
     $user = User::factory()->create();
     $oldPhoto = UploadedFile::fake()->image('old.jpg');
 
@@ -59,7 +59,7 @@ test('old photo is deleted when updating', function () {
     Storage::disk('public')->assertExists($updatedUser->profile_photo_path);
 });
 
-test('validates photo is an image', function () {
+test('validates photo is an image', function (): void {
     $user = User::factory()->create();
     $file = UploadedFile::fake()->create('document.pdf');
 
@@ -74,7 +74,7 @@ test('validates photo is an image', function () {
     expect($user->fresh()->profile_photo_path)->toBeNull();
 });
 
-test('validates photo size', function () {
+test('validates photo size', function (): void {
     $user = User::factory()->create();
 
     // Create a large file (2MB)
