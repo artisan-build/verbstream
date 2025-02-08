@@ -5,6 +5,7 @@ namespace ArtisanBuild\Verbstream\Actions;
 use App\Models\Team;
 use App\Models\User;
 use ArtisanBuild\Verbstream\Contracts\UpdatesTeamNames;
+use ArtisanBuild\Verbstream\Events\TeamNameUpdated;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 
@@ -26,5 +27,11 @@ class UpdateTeamName implements UpdatesTeamNames
         $team->forceFill([
             'name' => $input['name'],
         ])->save();
+
+        TeamNameUpdated::commit(
+            team_id: $team->id,
+            user_id: $user->id,
+            name: $input['name']
+        );
     }
 }
