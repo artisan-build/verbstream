@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Models\User;
 use ArtisanBuild\Verbstream\Events\PasswordConfirmed;
 use Illuminate\Support\Facades\Hash;
-use RuntimeException;
 use Thunk\Verbs\Facades\Verbs;
 
 beforeEach(function () {

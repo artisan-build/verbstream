@@ -8,7 +8,6 @@ use ArtisanBuild\Verbstream\Events\ApiTokenPermissionsUpdated;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\ValidationException;
 use Laravel\Sanctum\PersonalAccessToken;
-use RuntimeException;
 use Thunk\Verbs\Facades\Verbs;
 
 beforeEach(function () {

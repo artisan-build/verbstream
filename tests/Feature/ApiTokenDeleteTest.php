@@ -8,7 +8,6 @@ use ArtisanBuild\Verbstream\Events\ApiTokenDeleted;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Config;
 use Laravel\Sanctum\PersonalAccessToken;
-use RuntimeException;
 use Thunk\Verbs\Facades\Verbs;
 
 beforeEach(function () {

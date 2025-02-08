@@ -6,7 +6,6 @@ use App\Models\User;
 use ArtisanBuild\Verbstream\Events\PasswordUpdated;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-use RuntimeException;
 use Thunk\Verbs\Facades\Verbs;
 
 beforeEach(function () {
