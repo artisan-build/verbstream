@@ -5,6 +5,7 @@ namespace ArtisanBuild\Verbstream\Events;
 use App\Models\User;
 use App\States\UserState;
 use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Thunk\Verbs\Attributes\Autodiscovery\StateId;
 use Thunk\Verbs\Attributes\Hooks\Once;
 use Thunk\Verbs\Event;
@@ -24,7 +25,7 @@ class EmailVerificationNotificationSent extends Event
     {
         $user = User::find($this->user_id);
 
-        if ($user && $user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail()) {
+        if ($user && $user instanceof MustVerifyEmail && ! $user->hasVerifiedEmail()) {
             $user->notify(new VerifyEmail);
         }
     }

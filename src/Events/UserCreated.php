@@ -21,6 +21,11 @@ class UserCreated extends Event
 
     public string $password;
 
+    public function validate(): bool
+    {
+        return User::where('email', $this->email)->doesntExist();
+    }
+
     public function apply(UserState $state)
     {
         $state->email = $this->email;
@@ -29,6 +34,7 @@ class UserCreated extends Event
 
     public function handle()
     {
+
         return DB::transaction(function () {
             // Create the user
             $user = User::create([
@@ -47,11 +53,6 @@ class UserCreated extends Event
             // Set current team and create pivot record
             $user->forceFill(['current_team_id' => $team->id])->save();
             $user->teams()->attach($team, ['role' => 'owner']);
-
-            // Send email verification if needed
-            if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail) {
-                EmailVerificationNotificationSent::fire(user_id: $user->id);
-            }
 
             return $user->fresh();
         });

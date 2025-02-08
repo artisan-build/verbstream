@@ -2,7 +2,6 @@
 
 namespace ArtisanBuild\Verbstream\Http\Controllers;
 
-use ArtisanBuild\Verbstream\Events\EmailVerificationNotificationSent;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -22,8 +21,6 @@ class EmailVerificationNotificationController extends Controller
                         ? new JsonResponse('', 204)
                         : app(RedirectAsIntended::class, ['name' => 'email-verification']);
         }
-
-        EmailVerificationNotificationSent::fire(user_id: $request->user()->id);
 
         return app(EmailVerificationNotificationSentResponse::class);
     }
