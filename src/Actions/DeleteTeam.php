@@ -3,7 +3,9 @@
 namespace ArtisanBuild\Verbstream\Actions;
 
 use App\Models\Team;
+use App\Models\User;
 use ArtisanBuild\Verbstream\Contracts\DeletesTeams;
+use ArtisanBuild\Verbstream\Events\TeamDeleted;
 
 class DeleteTeam implements DeletesTeams
 {
@@ -12,6 +14,9 @@ class DeleteTeam implements DeletesTeams
      */
     public function delete(Team $team): void
     {
-        $team->purge();
+        TeamDeleted::fire(
+            team_id: $team->id,
+            user_id: $team->user_id
+        );
     }
 }
