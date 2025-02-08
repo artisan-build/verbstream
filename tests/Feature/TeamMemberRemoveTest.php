@@ -95,4 +95,4 @@ test('clears current team when removing member from their current team', functio
 
     expect($member->fresh()->current_team_id)->toBeNull()
         ->and($team->fresh()->hasUser($member))->toBeFalse();
-}); 
+});

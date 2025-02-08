@@ -3,6 +3,7 @@
 namespace ArtisanBuild\Verbstream\Http\Controllers;
 
 use App\Models\Team;
+use ArtisanBuild\Verbstream\Events\TeamDeleted;
 use ArtisanBuild\Verbstream\Events\TeamMemberAdded;
 use ArtisanBuild\Verbstream\Events\TeamMemberRemoved;
 use ArtisanBuild\Verbstream\Events\TeamMemberRoleUpdated;
@@ -12,6 +13,23 @@ use Illuminate\Routing\Controller;
 
 class TeamController extends Controller
 {
+    /**
+     * Delete the given team.
+     *
+     * @param  Request  $request
+     * @param  Team  $team
+     * @return RedirectResponse
+     */
+    public function destroy(Request $request, Team $team)
+    {
+        TeamDeleted::fire(
+            team_id: $team->id,
+            user_id: $request->user()->id
+        );
+
+        return redirect(config('fortify.home'), 303);
+    }
+
     /**
      * Add a new team member to a team.
      *

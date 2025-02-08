@@ -71,7 +71,7 @@ test('cannot create invitation for user already on team', function () {
 test('cannot create duplicate invitations', function () {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
-    
+
     // Create first invitation
     TeamInvitationCreated::fire(
         team_id: $team->id,
@@ -105,4 +105,4 @@ test('validates role input', function () {
 
     // Assert no invitation was created
     expect(TeamInvitation::where('team_id', $team->id)->count())->toBe(0);
-}); 
+});

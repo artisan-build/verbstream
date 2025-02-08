@@ -63,4 +63,4 @@ class TeamMemberRemoved extends Event
         // Remove from team
         $team->users()->detach($teamMember->id);
     }
-} 
+}
