@@ -6,7 +6,6 @@ namespace ArtisanBuild\Verbstream\Events;
 
 use App\Models\User;
 use App\States\UserState;
-use Illuminate\Support\Collection;
 use Laravel\Fortify\Actions\GenerateNewRecoveryCodes;
 use RuntimeException;
 use Thunk\Verbs\Attributes\Autodiscovery\StateId;
