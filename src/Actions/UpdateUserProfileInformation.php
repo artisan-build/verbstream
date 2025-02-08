@@ -49,6 +49,6 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'email_verified_at' => null,
         ])->save();
 
-        $user->sendEmailVerificationNotification();
+        // Email verification will be handled by the ProfileInformationUpdated event
     }
 }

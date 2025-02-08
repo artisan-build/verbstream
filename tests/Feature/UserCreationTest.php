@@ -3,11 +3,14 @@
 use App\Models\Team;
 use App\Models\User;
 use ArtisanBuild\Verbstream\Events\UserCreated;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Thunk\Verbs\Facades\Verbs;
 
 beforeEach(function () {
     Verbs::commitImmediately();
+    Notification::fake();
 });
 
 test('it creates a user with personal team', function () {
@@ -37,4 +40,7 @@ test('it creates a user with personal team', function () {
     // Assert pivot table record exists
     expect($user->teams)->toHaveCount(1)
         ->and($user->teams->first()->id)->toBe($personalTeam->id);
+
+    // Assert email verification notification was sent exactly once
+    Notification::assertSentTo($user, VerifyEmail::class, 1);
 });
