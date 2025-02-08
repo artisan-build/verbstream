@@ -8,5 +8,5 @@ class TeamState extends State
 {
     public string $name;
     public int $user_id;
-    public bool $personal_team;
-} 
+    public array $members = [];
+}

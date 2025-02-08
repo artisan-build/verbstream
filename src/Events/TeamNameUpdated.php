@@ -43,4 +43,4 @@ class TeamNameUpdated extends Event
 
         return $team->fresh();
     }
-} 
+}

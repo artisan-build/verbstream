@@ -31,4 +31,4 @@ test('it creates a team and sets up relationships', function () {
 
     // Assert it's set as the current team
     expect($user->fresh()->current_team_id)->toBe($team->id);
-}); 
+});
