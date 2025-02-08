@@ -1,8 +1,8 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Support\Facades\Notification;
 use Thunk\Verbs\Facades\Verbs;
 
 beforeEach(function () {

@@ -2,8 +2,8 @@
 
 use App\Models\User;
 use ArtisanBuild\Verbstream\Events\ProfileInformationUpdated;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\ValidationException;
 use Thunk\Verbs\Facades\Verbs;
 

@@ -16,7 +16,9 @@ class TeamCreated extends Event
     public ?int $team_id = null;
 
     public int $user_id;
+
     public string $name;
+
     public bool $personal_team;
 
     public function apply(TeamState $state): void

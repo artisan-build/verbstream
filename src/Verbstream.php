@@ -3,10 +3,10 @@
 namespace ArtisanBuild\Verbstream;
 
 use App\Models\User;
+use ArtisanBuild\Verbstream\Models\TeamInvitation;
 use ArtisanBuild\Verbstream\Traits\HasTeams;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Arr;
-use ArtisanBuild\Verbstream\Models\TeamInvitation;
 
 /* Why we used final here...
  * We don't use final as a rule. However, in this case we are using static methods to set static properties to be used

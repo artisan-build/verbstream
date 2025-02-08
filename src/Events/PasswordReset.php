@@ -21,8 +21,11 @@ class PasswordReset extends Event
     public ?int $user_id = null;
 
     public string $email;
+
     public string $password;
+
     public string $password_confirmation;
+
     public string $token;
 
     public function apply(UserState $state): void
@@ -66,4 +69,4 @@ class PasswordReset extends Event
             throw new RuntimeException(__($status));
         }
     }
-} 
+}

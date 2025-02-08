@@ -18,7 +18,9 @@ class PasswordUpdated extends Event
     public int $user_id;
 
     public string $current_password;
+
     public string $password;
+
     public string $password_confirmation;
 
     public function apply(UserState $state): void
@@ -48,4 +50,4 @@ class PasswordUpdated extends Event
             'password' => Hash::make($this->password),
         ])->save();
     }
-} 
+}

@@ -5,7 +5,6 @@ namespace ArtisanBuild\Verbstream\Events;
 use App\Models\Team;
 use App\Models\User;
 use App\States\UserState;
-use ArtisanBuild\Verbstream\Events\EmailVerificationNotificationSent;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Thunk\Verbs\Attributes\Autodiscovery\StateId;

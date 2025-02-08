@@ -5,7 +5,6 @@ use App\Models\User;
 use ArtisanBuild\Verbstream\Events\TeamMemberRemoved;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Validation\ValidationException;
 use Thunk\Verbs\Facades\Verbs;
 
 beforeEach(function () {

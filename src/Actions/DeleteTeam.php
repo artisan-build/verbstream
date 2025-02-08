@@ -3,7 +3,6 @@
 namespace ArtisanBuild\Verbstream\Actions;
 
 use App\Models\Team;
-use App\Models\User;
 use ArtisanBuild\Verbstream\Contracts\DeletesTeams;
 use ArtisanBuild\Verbstream\Events\TeamDeleted;
 

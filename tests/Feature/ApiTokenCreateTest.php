@@ -69,4 +69,4 @@ test('validates abilities are valid', function () {
 
     // Assert no token was created
     expect(PersonalAccessToken::where('tokenable_id', $user->id)->count())->toBe(0);
-}); 
+});

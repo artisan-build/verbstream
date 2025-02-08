@@ -18,6 +18,7 @@ class BrowserSessionsLoggedOut extends Event
     public int $user_id;
 
     public string $password;
+
     public ?string $current_session_id;
 
     public function apply(UserState $state): void

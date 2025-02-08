@@ -16,6 +16,7 @@ class TeamNameUpdated extends Event
     public int $team_id;
 
     public int $user_id;
+
     public string $name;
 
     public function apply(TeamState $state): void

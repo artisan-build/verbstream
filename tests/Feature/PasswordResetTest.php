@@ -95,4 +95,4 @@ test('validates password minimum length', function () {
 
     // Assert password was not changed
     expect(Hash::check('old-password', $user->fresh()->password))->toBeTrue();
-}); 
+});

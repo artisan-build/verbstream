@@ -13,7 +13,6 @@ class UserProfileController extends Controller
     /**
      * Update the user's profile information.
      *
-     * @param  Request  $request
      * @return RedirectResponse
      */
     public function update(Request $request)
@@ -30,7 +29,6 @@ class UserProfileController extends Controller
     /**
      * Update the user's profile photo.
      *
-     * @param  Request  $request
      * @return RedirectResponse
      */
     public function updatePhoto(Request $request)

@@ -13,8 +13,6 @@ class TeamInvitationController extends Controller
     /**
      * Create a new team invitation.
      *
-     * @param  Request  $request
-     * @param  Team  $team
      * @return RedirectResponse
      */
     public function store(Request $request, Team $team)

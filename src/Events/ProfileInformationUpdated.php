@@ -8,7 +8,6 @@ use App\Models\User;
 use App\States\UserState;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use RuntimeException;
 use Thunk\Verbs\Attributes\Autodiscovery\StateId;
 use Thunk\Verbs\Event;
 
@@ -18,6 +17,7 @@ class ProfileInformationUpdated extends Event
     public int $user_id;
 
     public string $name;
+
     public string $email;
 
     public function apply(UserState $state): void

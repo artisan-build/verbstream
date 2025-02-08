@@ -33,4 +33,4 @@ class PasswordConfirmed extends Event
 
         session()->put('auth.password_confirmed_at', time());
     }
-} 
+}

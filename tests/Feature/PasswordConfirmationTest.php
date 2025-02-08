@@ -39,4 +39,4 @@ test('cannot confirm with incorrect password', function () {
 
     // Assert password was not confirmed
     expect(session('auth.password_confirmed_at'))->toBeNull();
-}); 
+});

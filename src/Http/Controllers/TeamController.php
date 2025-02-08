@@ -16,8 +16,6 @@ class TeamController extends Controller
     /**
      * Delete the given team.
      *
-     * @param  Request  $request
-     * @param  Team  $team
      * @return RedirectResponse
      */
     public function destroy(Request $request, Team $team)
@@ -33,8 +31,6 @@ class TeamController extends Controller
     /**
      * Add a new team member to a team.
      *
-     * @param  Request  $request
-     * @param  Team  $team
      * @return RedirectResponse
      */
     public function addTeamMember(Request $request, Team $team)
@@ -52,8 +48,6 @@ class TeamController extends Controller
     /**
      * Update the role of an existing team member.
      *
-     * @param  Request  $request
-     * @param  Team  $team
      * @return RedirectResponse
      */
     public function updateTeamMemberRole(Request $request, Team $team)
@@ -71,8 +65,6 @@ class TeamController extends Controller
     /**
      * Remove a team member from the team.
      *
-     * @param  Request  $request
-     * @param  Team  $team
      * @return RedirectResponse
      */
     public function removeTeamMember(Request $request, Team $team)

@@ -19,7 +19,9 @@ class ProfilePhotoUpdated extends Event
     public int $user_id;
 
     public string $photo_path;
+
     public string $photo_name;
+
     public string $photo_content;
 
     public function apply(UserState $state): void
