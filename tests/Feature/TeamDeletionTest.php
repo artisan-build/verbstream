@@ -49,4 +49,4 @@ test('it prevents unauthorized users from deleting teams', function () {
 
     // Assert team was not deleted
     expect(Team::find($team->id))->not->toBeNull();
-}); 
+});

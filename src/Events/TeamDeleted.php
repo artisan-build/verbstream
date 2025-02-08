@@ -42,4 +42,4 @@ class TeamDeleted extends Event
         // Delete the team
         $team->delete();
     }
-} 
+}

@@ -10,14 +10,13 @@ use Illuminate\Support\Facades\Validator;
 use Thunk\Verbs\Attributes\Autodiscovery\StateId;
 use Thunk\Verbs\Event;
 
-class TeamMemberRoleUpdated extends Event
+class TeamMemberRemoved extends Event
 {
     #[StateId(TeamState::class)]
     public int $team_id;
 
     public int $user_id;
     public string $email;
-    public string $role;
 
     public function apply(TeamState $state): void
     {
@@ -30,16 +29,14 @@ class TeamMemberRoleUpdated extends Event
         $user = User::findOrFail($this->user_id);
 
         // Authorize the action
-        Gate::forUser($user)->authorize('updateTeamMember', $team);
+        Gate::forUser($user)->authorize('removeTeamMember', $team);
 
         // Validate the input
         Validator::make([
             'email' => $this->email,
-            'role' => $this->role,
         ], [
             'email' => ['required', 'email'],
-            'role' => ['required', 'string', 'in:admin,editor,member'],
-        ])->validateWithBag('updateTeamMemberRole');
+        ])->validateWithBag('removeTeamMember');
 
         $teamMember = User::where('email', $this->email)->first();
 
@@ -51,14 +48,19 @@ class TeamMemberRoleUpdated extends Event
             throw new \RuntimeException('User is not a member of the team.');
         }
 
-        // Cannot change role of team owner
+        // Cannot remove team owner
         if ($teamMember->id === $team->user_id) {
-            throw new \RuntimeException('Cannot change role of team owner.');
+            throw new \RuntimeException('Cannot remove team owner.');
         }
 
-        $team->users()->updateExistingPivot(
-            $teamMember->id,
-            ['role' => $this->role]
-        );
+        // Clear current_team_id if this was their current team
+        if ($teamMember->current_team_id === $team->id) {
+            $teamMember->forceFill([
+                'current_team_id' => null,
+            ])->save();
+        }
+
+        // Remove from team
+        $team->users()->detach($teamMember->id);
     }
-}
+} 

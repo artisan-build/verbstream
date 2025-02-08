@@ -2,7 +2,7 @@
 
 use App\Models\Team;
 use App\Models\User;
-use ArtisanBuild\Verbstream\Events\TeamMemberRoleUpdated;
+use ArtisanBuild\Verbstream\Events\TeamMemberRemoved;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
@@ -10,96 +10,89 @@ use Thunk\Verbs\Facades\Verbs;
 
 beforeEach(function () {
     Verbs::commitImmediately();
-    Gate::define('updateTeamMember', fn (User $user, Team $team) => $team->user_id === $user->id);
+    Gate::define('removeTeamMember', fn (User $user, Team $team) => $team->user_id === $user->id);
 });
 
-test('team owner can update member role', function () {
+test('team owner can remove a member', function () {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
     $member = User::factory()->create();
     $team->users()->attach($member, ['role' => 'member']);
 
-    TeamMemberRoleUpdated::fire(
+    TeamMemberRemoved::fire(
         team_id: $team->id,
         user_id: $owner->id,
-        email: $member->email,
-        role: 'admin'
+        email: $member->email
     );
 
-    expect($team->users()->where('user_id', $member->id)->first()->membership->role)
-        ->toBe('admin');
+    expect($team->fresh()->hasUser($member))->toBeFalse()
+        ->and($team->users)->toHaveCount(0);
 });
 
-test('non-owner cannot update member roles', function () {
+test('non-owner cannot remove team members', function () {
     $owner = User::factory()->create();
     $nonOwner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
     $member = User::factory()->create();
     $team->users()->attach($member, ['role' => 'member']);
 
-    expect(fn () => TeamMemberRoleUpdated::fire(
+    expect(fn () => TeamMemberRemoved::fire(
         team_id: $team->id,
         user_id: $nonOwner->id,
-        email: $member->email,
-        role: 'admin'
+        email: $member->email
     ))->toThrow(AuthorizationException::class);
 
-    // Assert role was not changed
-    expect($team->users()->where('user_id', $member->id)->first()->membership->role)
-        ->toBe('member');
+    // Assert member was not removed
+    expect($team->fresh()->hasUser($member))->toBeTrue()
+        ->and($team->users)->toHaveCount(1);
 });
 
-test('cannot update role of non-existent user', function () {
+test('cannot remove non-existent user', function () {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
 
-    expect(fn () => TeamMemberRoleUpdated::fire(
+    expect(fn () => TeamMemberRemoved::fire(
         team_id: $team->id,
         user_id: $owner->id,
-        email: 'nonexistent@example.com',
-        role: 'admin'
+        email: 'nonexistent@example.com'
     ))->toThrow(\RuntimeException::class, 'User not found.');
 });
 
-test('cannot update role of user not on team', function () {
+test('cannot remove user not on team', function () {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
     $nonMember = User::factory()->create();
 
-    expect(fn () => TeamMemberRoleUpdated::fire(
+    expect(fn () => TeamMemberRemoved::fire(
         team_id: $team->id,
         user_id: $owner->id,
-        email: $nonMember->email,
-        role: 'admin'
+        email: $nonMember->email
     ))->toThrow(\RuntimeException::class, 'User is not a member of the team.');
 });
 
-test('cannot update role of team owner', function () {
+test('cannot remove team owner', function () {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
 
-    expect(fn () => TeamMemberRoleUpdated::fire(
+    expect(fn () => TeamMemberRemoved::fire(
         team_id: $team->id,
         user_id: $owner->id,
-        email: $owner->email,
-        role: 'member'
-    ))->toThrow(\RuntimeException::class, 'Cannot change role of team owner.');
+        email: $owner->email
+    ))->toThrow(\RuntimeException::class, 'Cannot remove team owner.');
 });
 
-test('validates role input', function () {
+test('clears current team when removing member from their current team', function () {
     $owner = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $owner->id]);
-    $member = User::factory()->create();
+    $member = User::factory()->create(['current_team_id' => $team->id]);
     $team->users()->attach($member, ['role' => 'member']);
 
-    expect(fn () => TeamMemberRoleUpdated::fire(
+    TeamMemberRemoved::fire(
         team_id: $team->id,
         user_id: $owner->id,
-        email: $member->email,
-        role: 'invalid-role'
-    ))->toThrow(ValidationException::class);
+        email: $member->email
+    );
 
-    // Assert role was not changed
-    expect($team->users()->where('user_id', $member->id)->first()->membership->role)
-        ->toBe('member');
-});
+    expect($member->fresh()->current_team_id)->toBeNull()
+        ->and($team->fresh()->hasUser($member))->toBeFalse();
+}); 

@@ -4,6 +4,7 @@ namespace ArtisanBuild\Verbstream\Http\Controllers;
 
 use App\Models\Team;
 use ArtisanBuild\Verbstream\Events\TeamMemberAdded;
+use ArtisanBuild\Verbstream\Events\TeamMemberRemoved;
 use ArtisanBuild\Verbstream\Events\TeamMemberRoleUpdated;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -44,6 +45,24 @@ class TeamController extends Controller
             user_id: $request->user()->id,
             email: $request->email,
             role: $request->role
+        );
+
+        return back(303);
+    }
+
+    /**
+     * Remove a team member from the team.
+     *
+     * @param  Request  $request
+     * @param  Team  $team
+     * @return RedirectResponse
+     */
+    public function removeTeamMember(Request $request, Team $team)
+    {
+        TeamMemberRemoved::fire(
+            team_id: $team->id,
+            user_id: $request->user()->id,
+            email: $request->email
         );
 
         return back(303);

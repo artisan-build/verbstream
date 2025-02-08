@@ -52,7 +52,7 @@ class TeamMemberAdded extends Event
         }
 
         $team->users()->attach(
-            $newMember->id, 
+            $newMember->id,
             ['role' => $this->role]
         );
     }
