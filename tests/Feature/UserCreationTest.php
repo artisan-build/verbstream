@@ -2,9 +2,9 @@
 
 use App\Models\Team;
 use App\Models\User;
-use ArtisanBuild\Verbstream\Events\UserCreated;
+use ArtisanBuild\Verbstream\Actions\CreateNewUser;
+use ArtisanBuild\Verbstream\Verbstream;
 use Illuminate\Auth\Notifications\VerifyEmail;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Thunk\Verbs\Facades\Verbs;
 
@@ -14,11 +14,15 @@ beforeEach(function (): void {
 });
 
 test('it creates a user with personal team', function (): void {
-    $user = UserCreated::commit(
-        name: 'Test User',
-        email: 'test@example.com',
-        password: Hash::make('password')
-    );
+    $creator = new CreateNewUser;
+
+    $user = $creator->create([
+        'name' => 'Test User',
+        'email' => 'test@example.com',
+        'password' => 'password',
+        'password_confirmation' => 'password',
+        'terms' => Verbstream::hasTermsAndPrivacyPolicyFeature(),
+    ]);
 
     // Assert user was created
     expect($user)->toBeInstanceOf(User::class)
@@ -31,16 +35,13 @@ test('it creates a user with personal team', function (): void {
         ->first();
 
     expect($personalTeam)->toBeInstanceOf(Team::class)
-        ->and($personalTeam->name)->toBe("Test's Team");
-
-    // Assert current_team_id was set
-    expect($user->current_team_id)->toBe($personalTeam->id);
-    expect(User::find($user->id)->current_team_id)->toBe($personalTeam->id);
-
-    // Assert pivot table record exists
-    expect($user->teams)->toHaveCount(1)
+        ->and($personalTeam->name)->toBe("Test's Team")
+        ->and($user->current_team_id)->toBe($personalTeam->id)
+        ->and(User::find($user->id)->current_team_id)->toBe($personalTeam->id)
+        ->and($user->teams)->toHaveCount(1)
         ->and($user->teams->first()->id)->toBe($personalTeam->id);
 
     // Assert email verification notification was sent exactly once
-    Notification::assertSentTo($user, VerifyEmail::class, 1);
+    Notification::assertSentTo($user, VerifyEmail::class);
+    Notification::assertCount(1);
 });

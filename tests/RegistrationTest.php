@@ -2,6 +2,7 @@
 
 use ArtisanBuild\Verbstream\Events\UserCreated;
 use ArtisanBuild\Verbstream\Verbstream;
+use Illuminate\Support\Facades\Notification;
 use Laravel\Fortify\Features;
 use Thunk\Verbs\Facades\Verbs;
 
@@ -21,6 +22,7 @@ test('new users can register', function (): void {
     $this->withoutExceptionHandling();
     Verbs::fake();
     Verbs::assertNothingCommitted();
+    Notification::fake();
     $response = $this->post(route('register'), [
         'name' => 'New Test User',
         'email' => 'new@example.com',
@@ -30,6 +32,8 @@ test('new users can register', function (): void {
     ]);
 
     Verbs::assertCommitted(UserCreated::class);
+
+    Notification::assertCount(1);
 
     $this->assertAuthenticated();
     $response->assertRedirect(route('dashboard', absolute: false));
