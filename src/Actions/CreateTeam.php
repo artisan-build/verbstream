@@ -5,7 +5,7 @@ namespace ArtisanBuild\Verbstream\Actions;
 use App\Models\Team;
 use App\Models\User;
 use ArtisanBuild\Verbstream\Contracts\CreatesTeams;
-use ArtisanBuild\Verbstream\Verbstream;
+use ArtisanBuild\Verbstream\Events\TeamCreated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
@@ -25,11 +25,10 @@ class CreateTeam implements CreatesTeams
             'name' => ['required', 'string', 'max:255'],
         ])->validateWithBag('createTeam');
 
-        $user->switchTeam($team = $user->ownedTeams()->create([
-            'name' => $input['name'],
-            'personal_team' => false,
-        ]));
-
-        return $team;
+        return TeamCreated::commit(
+            user_id: $user->id,
+            name: $input['name'],
+            personal_team: false
+        );
     }
 }
