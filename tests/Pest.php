@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tests\TestCase;
+use ArtisanBuild\Verbstream\Tests\TestCase;
 
-pest()->extends(TestCase::class, DatabaseTransactions::class);
+uses(TestCase::class)->in('Feature');
