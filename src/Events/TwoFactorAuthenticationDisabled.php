@@ -15,12 +15,6 @@ class TwoFactorAuthenticationDisabled extends Event
     #[StateId(UserState::class)]
     public int $user_id;
 
-    public function apply(UserState $state): void
-    {
-        $state->two_factor_secret = null;
-        $state->two_factor_recovery_codes = null;
-    }
-
     public function handle(): void
     {
         $user = User::findOrFail($this->user_id);

@@ -11,8 +11,6 @@ use Illuminate\Support\Collection;
 use Laravel\Fortify\Actions\ConfirmTwoFactorAuthentication;
 use Laravel\Fortify\Actions\GenerateNewRecoveryCodes;
 use Laravel\Fortify\RecoveryCode;
-use Mockery;
-use RuntimeException;
 use Thunk\Verbs\Facades\Verbs;
 
 beforeEach(function () {

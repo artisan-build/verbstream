@@ -23,7 +23,8 @@ class TestCase extends Orchestra
     protected function getPackageProviders($app)
     {
         return [
-            SkeletonServiceProvider::class,
+            VerbstreamServiceProvider::class,
+            FortifyServiceProvider::class,
         ];
     }
 
@@ -31,10 +32,19 @@ class TestCase extends Orchestra
     {
         config()->set('database.default', 'testing');
 
-        /*
-         foreach (\Illuminate\Support\Facades\File::allFiles(__DIR__ . '/database/migrations') as $migration) {
-            (include $migration->getRealPath())->up();
-         }
-         */
+        $app['config']->set('database.default', 'testbench');
+                $app['config']->set('database.connections.testbench', [
+                    'driver' => 'sqlite',
+                    'database' => ':memory:',
+                    'prefix' => '',
+                ]);
+
+                // Enable two-factor authentication features
+                $app['config']->set('fortify.features', [
+                    \Laravel\Fortify\Features::twoFactorAuthentication([
+                        'confirm' => true,
+                        'confirmPassword' => true,
+                    ]),
+                ]);
     }
 }

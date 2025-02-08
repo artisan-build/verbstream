@@ -1,3 +1,5 @@
+<?php
+
 use App\Models\User;
 use ArtisanBuild\Verbstream\Events\ProfileInformationUpdated;
 use Illuminate\Auth\Notifications\VerifyEmail;

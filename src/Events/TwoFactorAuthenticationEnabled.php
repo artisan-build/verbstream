@@ -18,11 +18,6 @@ class TwoFactorAuthenticationEnabled extends Event
 
     public string $secret;
 
-    public function apply(UserState $state): void
-    {
-        $state->two_factor_secret = $this->secret;
-    }
-
     public function handle()
     {
         $user = User::findOrFail($this->user_id);
