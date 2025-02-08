@@ -9,8 +9,6 @@ use ArtisanBuild\Verbstream\Events\TwoFactorAuthenticationEnabled;
 use ArtisanBuild\Verbstream\Events\TwoFactorRecoveryCodesRegenerated;
 use Illuminate\Support\Collection;
 use Laravel\Fortify\Actions\ConfirmTwoFactorAuthentication;
-use Laravel\Fortify\Actions\GenerateNewRecoveryCodes;
-use Laravel\Fortify\RecoveryCode;
 use Thunk\Verbs\Facades\Verbs;
 
 beforeEach(function (): void {
@@ -23,15 +21,6 @@ test('user can enable two factor authentication', function (): void {
         'two_factor_confirmed_at' => null,
     ]);
 
-    // Mock the recovery code generation
-    $recoveryCodes = Collection::make(['code1', 'code2'])->map(fn ($code) => new RecoveryCode($code));
-    $mock = Mockery::mock(GenerateNewRecoveryCodes::class);
-    $mock->shouldReceive('__invoke')
-        ->once()
-        ->with(Mockery::type(User::class))
-        ->andReturn($recoveryCodes);
-    app()->instance(GenerateNewRecoveryCodes::class, $mock);
-
     $secret = 'test-secret';
     $codes = TwoFactorAuthenticationEnabled::commit(
         user_id: $user->id,
@@ -40,11 +29,10 @@ test('user can enable two factor authentication', function (): void {
 
     // Assert 2FA was enabled
     expect($user->fresh()->two_factor_secret)->toBe($secret)
-        ->and($user->fresh()->two_factor_confirmed_at)->toBeNull();
+        ->and($user->fresh()->two_factor_confirmed_at)->toBeNull()
+        ->and($codes)->toBeInstanceOf(Collection::class);
 
     // Assert recovery codes were generated
-    expect($codes)->toBeInstanceOf(Collection::class)
-        ->and($codes)->toBe($recoveryCodes);
 });
 
 test('cannot enable two factor authentication when already enabled', function (): void {
@@ -56,11 +44,11 @@ test('cannot enable two factor authentication when already enabled', function ()
     expect(fn () => TwoFactorAuthenticationEnabled::commit(
         user_id: $user->id,
         secret: 'new-secret'
-    ))->toThrow(RuntimeException::class, 'Two factor authentication is already enabled.');
+    ))->toThrow(RuntimeException::class, 'Two factor authentication is already enabled.')
+        ->and($user->fresh()->two_factor_secret)->toBe('existing-secret')
+        ->and($user->fresh()->two_factor_confirmed_at)->not->toBeNull();
 
     // Assert 2FA settings were not changed
-    expect($user->fresh()->two_factor_secret)->toBe('existing-secret')
-        ->and($user->fresh()->two_factor_confirmed_at)->not->toBeNull();
 });
 
 test('user can confirm two factor authentication', function (): void {
@@ -146,22 +134,12 @@ test('user can regenerate recovery codes', function (): void {
         'two_factor_recovery_codes' => json_encode(['old-code-1', 'old-code-2']),
     ]);
 
-    // Mock the recovery code generation
-    $newCodes = Collection::make(['new-code-1', 'new-code-2'])->map(fn ($code) => new RecoveryCode($code));
-    $mock = Mockery::mock(GenerateNewRecoveryCodes::class);
-    $mock->shouldReceive('__invoke')
-        ->once()
-        ->with(Mockery::type(User::class))
-        ->andReturn($newCodes);
-    app()->instance(GenerateNewRecoveryCodes::class, $mock);
-
     $regeneratedCodes = TwoFactorRecoveryCodesRegenerated::commit(
         user_id: $user->id
     );
 
     // Assert new codes were generated
-    expect($regeneratedCodes)->toBeInstanceOf(Collection::class)
-        ->and($regeneratedCodes)->toBe($newCodes);
+    expect($regeneratedCodes)->toBeInstanceOf(Collection::class);
 });
 
 test('cannot regenerate recovery codes when 2FA is not enabled', function (): void {

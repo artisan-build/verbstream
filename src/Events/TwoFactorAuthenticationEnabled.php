@@ -6,6 +6,7 @@ namespace ArtisanBuild\Verbstream\Events;
 
 use App\Models\User;
 use App\States\UserState;
+use Illuminate\Support\Collection;
 use Laravel\Fortify\Actions\GenerateNewRecoveryCodes;
 use RuntimeException;
 use Thunk\Verbs\Attributes\Autodiscovery\StateId;
@@ -18,7 +19,7 @@ class TwoFactorAuthenticationEnabled extends Event
 
     public string $secret;
 
-    public function handle(): User
+    public function handle(): Collection
     {
         $user = User::findOrFail($this->user_id);
 
@@ -35,6 +36,8 @@ class TwoFactorAuthenticationEnabled extends Event
         // Generate recovery codes
         app(GenerateNewRecoveryCodes::class)($user);
 
-        return $user->fresh();
+        $user->refresh();
+
+        return collect(json_decode((string) decrypt($user->two_factor_recovery_codes)));
     }
 }
