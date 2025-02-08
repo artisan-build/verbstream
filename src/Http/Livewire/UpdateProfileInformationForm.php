@@ -2,6 +2,7 @@
 
 namespace ArtisanBuild\Verbstream\Http\Livewire;
 
+use App\Events\EmailVerificationNotificationSent;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -90,7 +91,7 @@ class UpdateProfileInformationForm extends Component
      */
     public function sendEmailVerification()
     {
-        Auth::user()->sendEmailVerificationNotification();
+        EmailVerificationNotificationSent::fire(user_id: Auth::id());
 
         $this->verificationLinkSent = true;
     }
