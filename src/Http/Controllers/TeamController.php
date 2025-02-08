@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace ArtisanBuild\Verbstream\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Team;
-use App\Events\TeamMemberAdded;
-use Illuminate\Http\Request;
+use ArtisanBuild\Verbstream\Events\TeamMemberAdded;
+use ArtisanBuild\Verbstream\Events\TeamMemberRoleUpdated;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class TeamController extends Controller
 {
@@ -28,4 +29,23 @@ class TeamController extends Controller
 
         return back(303);
     }
-} 
+
+    /**
+     * Update the role of an existing team member.
+     *
+     * @param  Request  $request
+     * @param  Team  $team
+     * @return RedirectResponse
+     */
+    public function updateTeamMemberRole(Request $request, Team $team)
+    {
+        TeamMemberRoleUpdated::fire(
+            team_id: $team->id,
+            user_id: $request->user()->id,
+            email: $request->email,
+            role: $request->role
+        );
+
+        return back(303);
+    }
+}
