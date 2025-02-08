@@ -2,7 +2,7 @@
 
 namespace ArtisanBuild\Verbstream\Mail;
 
-use ArtisanBuild\Verbstream\TeamInvitation as TeamInvitationModel;
+use ArtisanBuild\Verbstream\Models\TeamInvitation as TeamInvitationModel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -15,7 +15,7 @@ class TeamInvitation extends Mailable
     /**
      * The team invitation instance.
      *
-     * @var \ArtisanBuild\Verbstream\TeamInvitation
+     * @var \ArtisanBuild\Verbstream\Models\TeamInvitation
      */
     public $invitation;
 
