@@ -118,7 +118,11 @@ class VerbstreamServiceProvider extends ServiceProvider
         app()->singleton(DeletesTeams::class, DeleteTeam::class);
         app()->singleton(DeletesUsers::class, DeleteUser::class);
 
-        app()->singleton(CreatesNewUsers::class, CreateNewUser::class);
+        app()->singleton(CreatesNewUsers::class, function ($app) {
+            $creator = new CreateNewUser;
+
+            return $creator->withoutVerificationEmail();
+        });
         app()->singleton(UpdatesUserProfileInformation::class, UpdateUserProfileInformation::class);
         app()->singleton(UpdatesUserPasswords::class, UpdateUserPassword::class);
         app()->singleton(ResetsUserPasswords::class, ResetUserPassword::class);
