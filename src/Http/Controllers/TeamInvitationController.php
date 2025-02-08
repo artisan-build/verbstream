@@ -2,59 +2,29 @@
 
 namespace ArtisanBuild\Verbstream\Http\Controllers;
 
-use ArtisanBuild\Verbstream\Contracts\AddsTeamMembers;
-use ArtisanBuild\Verbstream\Verbstream;
-use Illuminate\Auth\Access\AuthorizationException;
+use App\Models\Team;
+use ArtisanBuild\Verbstream\Events\TeamInvitationCreated;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Gate;
 
 class TeamInvitationController extends Controller
 {
     /**
-     * Accept a team invitation.
+     * Create a new team invitation.
      *
-     * @param  int  $invitationId
+     * @param  Request  $request
+     * @param  Team  $team
      * @return RedirectResponse
      */
-    public function accept(Request $request, $invitationId)
+    public function store(Request $request, Team $team)
     {
-        $model = Verbstream::teamInvitationModel();
-
-        $invitation = $model::whereKey($invitationId)->firstOrFail();
-
-        app(AddsTeamMembers::class)->add(
-            $invitation->team->owner,
-            $invitation->team,
-            $invitation->email,
-            $invitation->role
+        TeamInvitationCreated::fire(
+            team_id: $team->id,
+            user_id: $request->user()->id,
+            email: $request->email,
+            role: $request->role
         );
-
-        $invitation->delete();
-
-        return redirect(config('fortify.home'))->banner(
-            __('Great! You have accepted the invitation to join the :team team.', ['team' => $invitation->team->name]),
-        );
-    }
-
-    /**
-     * Cancel the given team invitation.
-     *
-     * @param  int  $invitationId
-     * @return RedirectResponse
-     */
-    public function destroy(Request $request, $invitationId)
-    {
-        $model = Verbstream::teamInvitationModel();
-
-        $invitation = $model::whereKey($invitationId)->firstOrFail();
-
-        if (! Gate::forUser($request->user())->check('removeTeamMember', $invitation->team)) {
-            throw new AuthorizationException;
-        }
-
-        $invitation->delete();
 
         return back(303);
     }

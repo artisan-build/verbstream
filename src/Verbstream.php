@@ -6,6 +6,7 @@ use App\Models\User;
 use ArtisanBuild\Verbstream\Traits\HasTeams;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Arr;
+use ArtisanBuild\Verbstream\Models\TeamInvitation;
 
 /* Why we used final here...
  * We don't use final as a rule. However, in this case we are using static methods to set static properties to be used
@@ -130,7 +131,7 @@ final class Verbstream
 
     public static function userModel(): string
     {
-        return self::$userModel;
+        return config('verbstream.user_model', User::class);
     }
 
     public static function newUserModel(): Authenticatable
@@ -149,7 +150,7 @@ final class Verbstream
 
     public static function teamModel(): string
     {
-        return self::$teamModel;
+        return config('verbstream.team_model', \App\Models\Team::class);
     }
 
     public static function newTeamModel(): mixed
@@ -168,7 +169,7 @@ final class Verbstream
 
     public static function membershipModel(): string
     {
-        return self::$membershipModel;
+        return config('verbstream.membership_model', 'team_user');
     }
 
     public static function useMembershipModel(string $model): Verbstream
@@ -180,7 +181,7 @@ final class Verbstream
 
     public static function teamInvitationModel(): string
     {
-        return self::$teamInvitationModel;
+        return config('verbstream.team_invitation_model', TeamInvitation::class);
     }
 
     public static function localizedMarkdownPath($name): string
