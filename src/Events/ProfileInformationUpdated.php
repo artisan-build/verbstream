@@ -62,4 +62,4 @@ class ProfileInformationUpdated extends Event
 
         return $user->fresh();
     }
-} 
+}
