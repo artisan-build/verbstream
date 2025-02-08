@@ -21,7 +21,7 @@ class TwoFactorRecoveryCodesRegenerated extends Event
         // Recovery codes are stored in the user record
     }
 
-    public function handle()
+    public function handle(): User
     {
         $user = User::findOrFail($this->user_id);
 
@@ -31,6 +31,8 @@ class TwoFactorRecoveryCodesRegenerated extends Event
         }
 
         // Generate new recovery codes
-        return app(GenerateNewRecoveryCodes::class)($user);
+        app(GenerateNewRecoveryCodes::class)($user);
+
+        return $user->fresh();
     }
 }

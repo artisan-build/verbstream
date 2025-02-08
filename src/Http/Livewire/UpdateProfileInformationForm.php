@@ -2,7 +2,7 @@
 
 namespace ArtisanBuild\Verbstream\Http\Livewire;
 
-use App\Events\EmailVerificationNotificationSent;
+use ArtisanBuild\Verbstream\Events\EmailVerificationNotificationSent;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;

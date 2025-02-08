@@ -8,15 +8,16 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Laravel\Fortify\Contracts\EmailVerificationNotificationSentResponse;
 use Laravel\Fortify\Http\Responses\RedirectAsIntended;
+use Illuminate\Contracts\Support\Responsable;
 
 class EmailVerificationNotificationController extends Controller
 {
     /**
      * Send a new email verification notification.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse|Responsable
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse|Responsable
     {
         if ($request->user()->hasVerifiedEmail()) {
             return $request->wantsJson()

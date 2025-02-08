@@ -11,4 +11,6 @@ class TeamState extends State
     public int $user_id;
 
     public array $members = [];
+
+    public bool $personal_team = false;
 }

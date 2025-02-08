@@ -18,7 +18,7 @@ class TwoFactorAuthenticationEnabled extends Event
 
     public string $secret;
 
-    public function handle()
+    public function handle(): User
     {
         $user = User::findOrFail($this->user_id);
 
@@ -33,6 +33,8 @@ class TwoFactorAuthenticationEnabled extends Event
         ])->save();
 
         // Generate recovery codes
-        return app(GenerateNewRecoveryCodes::class)($user);
+        app(GenerateNewRecoveryCodes::class)($user);
+
+        return $user->fresh();
     }
 }
