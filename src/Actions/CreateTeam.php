@@ -7,8 +7,6 @@ use App\Models\User;
 use ArtisanBuild\Verbstream\Contracts\CreatesTeams;
 use ArtisanBuild\Verbstream\Events\TeamCreated;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Validator;
 
 class CreateTeam implements CreatesTeams
 {
@@ -19,12 +17,6 @@ class CreateTeam implements CreatesTeams
      */
     public function create(User $user, array $input): Model
     {
-        Gate::forUser($user)->authorize('create', Verbstream::newTeamModel());
-
-        Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
-        ])->validateWithBag('createTeam');
-
         return TeamCreated::commit(
             user_id: $user->id,
             name: $input['name'],
