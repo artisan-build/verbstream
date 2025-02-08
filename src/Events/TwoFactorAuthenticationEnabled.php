@@ -24,7 +24,7 @@ class TwoFactorAuthenticationEnabled extends Event
         $state->two_factor_secret = $this->secret;
     }
 
-    public function handle(): Collection
+    public function handle()
     {
         $user = User::findOrFail($this->user_id);
 

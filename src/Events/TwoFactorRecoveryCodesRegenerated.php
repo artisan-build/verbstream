@@ -22,7 +22,7 @@ class TwoFactorRecoveryCodesRegenerated extends Event
         // Recovery codes are stored in the user record
     }
 
-    public function handle(): Collection
+    public function handle()
     {
         $user = User::findOrFail($this->user_id);
 
