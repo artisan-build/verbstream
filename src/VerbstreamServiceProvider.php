@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace ArtisanBuild\Verbstream;
 
-use App\Actions\Fortify\CreateNewUser;
-use App\Actions\Fortify\ResetUserPassword;
-use App\Actions\Fortify\UpdateUserPassword;
-use App\Actions\Fortify\UpdateUserProfileInformation;
+use ArtisanBuild\Verbstream\Actions\CreateNewUser;
+use ArtisanBuild\Verbstream\Actions\ResetUserPassword;
+use ArtisanBuild\Verbstream\Actions\UpdateUserPassword;
+use ArtisanBuild\Verbstream\Actions\UpdateUserProfileInformation;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Contracts\LoginViewResponse;
 use Laravel\Fortify\Contracts\RegisterViewResponse;
 use Laravel\Fortify\Contracts\RequestPasswordResetLinkViewResponse;
 use Laravel\Fortify\Contracts\ResetPasswordViewResponse;
 use Laravel\Fortify\Contracts\VerifyEmailViewResponse;
+use Laravel\Fortify\Fortify;
 use Override;
+use Symfony\Component\HttpFoundation\Response;
 
 class VerbstreamServiceProvider extends ServiceProvider
 {
@@ -34,60 +35,54 @@ class VerbstreamServiceProvider extends ServiceProvider
 
         RateLimiter::for('login', function (Request $request) {
             $email = (string) $request->email;
+
             return Limit::perMinute(5)->by($email.$request->ip());
         });
 
-        RateLimiter::for('two-factor', function (Request $request) {
-            return Limit::perMinute(5)->by($request->session()->get('login.id'));
-        });
+        RateLimiter::for('two-factor', fn (Request $request) => Limit::perMinute(5)->by($request->session()->get('login.id')));
     }
 
     #[Override]
     public function register(): void
     {
-        $this->app->singleton(LoginViewResponse::class, function () {
-            return new class implements LoginViewResponse {
-                public function toResponse($request)
-                {
-                    return view('verbstream::auth.login');
-                }
-            };
+        $this->app->singleton(LoginViewResponse::class, fn () => new class implements LoginViewResponse
+        {
+            public function toResponse($request): Response
+            {
+                return response()->view('verbstream::auth.login');
+            }
         });
 
-        $this->app->singleton(RegisterViewResponse::class, function () {
-            return new class implements RegisterViewResponse {
-                public function toResponse($request)
-                {
-                    return view('verbstream::auth.register');
-                }
-            };
+        $this->app->singleton(RegisterViewResponse::class, fn () => new class implements RegisterViewResponse
+        {
+            public function toResponse($request): Response
+            {
+                return response()->view('verbstream::auth.register');
+            }
         });
 
-        $this->app->singleton(RequestPasswordResetLinkViewResponse::class, function () {
-            return new class implements RequestPasswordResetLinkViewResponse {
-                public function toResponse($request)
-                {
-                    return view('verbstream::auth.forgot-password');
-                }
-            };
+        $this->app->singleton(RequestPasswordResetLinkViewResponse::class, fn () => new class implements RequestPasswordResetLinkViewResponse
+        {
+            public function toResponse($request): Response
+            {
+                return response()->view('verbstream::auth.forgot-password');
+            }
         });
 
-        $this->app->singleton(ResetPasswordViewResponse::class, function () {
-            return new class implements ResetPasswordViewResponse {
-                public function toResponse($request)
-                {
-                    return view('verbstream::auth.reset-password', ['request' => $request]);
-                }
-            };
+        $this->app->singleton(ResetPasswordViewResponse::class, fn () => new class implements ResetPasswordViewResponse
+        {
+            public function toResponse($request): Response
+            {
+                return response()->view('verbstream::auth.reset-password', ['request' => $request]);
+            }
         });
 
-        $this->app->singleton(VerifyEmailViewResponse::class, function () {
-            return new class implements VerifyEmailViewResponse {
-                public function toResponse($request)
-                {
-                    return view('verbstream::auth.verify-email');
-                }
-            };
+        $this->app->singleton(VerifyEmailViewResponse::class, fn () => new class implements VerifyEmailViewResponse
+        {
+            public function toResponse($request): Response
+            {
+                return response()->view('verbstream::auth.verify-email');
+            }
         });
     }
 }

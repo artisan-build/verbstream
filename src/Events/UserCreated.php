@@ -56,10 +56,9 @@ class UserCreated extends Event
             $user->teams()->attach($team, ['role' => 'owner']);
 
             app(FireIfDefined::class)(
-                event: '\ArtisanBuild\Till\Events\NewSubscriberAddedToDefaultPlan',
+                event: \ArtisanBuild\Till\Events\NewSubscriberAddedToDefaultPlan::class,
                 properties: ['subscriber_id' => $team->id],
             );
-
 
             return $user->fresh();
         });
