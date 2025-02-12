@@ -5,6 +5,7 @@ namespace ArtisanBuild\Verbstream\Events;
 use App\Models\Team;
 use App\Models\User;
 use App\States\UserState;
+use ArtisanBuild\Adverbs\Actions\FireIfDefined;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Thunk\Verbs\Attributes\Autodiscovery\StateId;
@@ -53,6 +54,12 @@ class UserCreated extends Event
             // Set current team and create pivot record
             $user->forceFill(['current_team_id' => $team->id])->save();
             $user->teams()->attach($team, ['role' => 'owner']);
+
+            app(FireIfDefined::class)(
+                event: '\ArtisanBuild\Till\Events\NewSubscriberAddedToDefaultPlan',
+                properties: ['subscriber_id' => $team->id],
+            );
+
 
             return $user->fresh();
         });
