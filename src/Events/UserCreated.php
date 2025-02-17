@@ -6,6 +6,7 @@ use App\Models\Team;
 use App\Models\User;
 use App\States\UserState;
 use ArtisanBuild\Adverbs\Actions\FireIfDefined;
+use ArtisanBuild\Till\Events\NewSubscriberAddedToDefaultPlan;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Thunk\Verbs\Attributes\Autodiscovery\StateId;
@@ -56,7 +57,7 @@ class UserCreated extends Event
             $user->teams()->attach($team, ['role' => 'owner']);
 
             app(FireIfDefined::class)(
-                event: \ArtisanBuild\Till\Events\NewSubscriberAddedToDefaultPlan::class,
+                event: NewSubscriberAddedToDefaultPlan::class,
                 properties: ['subscriber_id' => $team->id],
             );
 
