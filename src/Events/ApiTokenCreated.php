@@ -6,7 +6,6 @@ namespace ArtisanBuild\Verbstream\Events;
 
 use App\Models\User;
 use App\States\UserState;
-use ArtisanBuild\Adverbs\Attributes\Idempotent;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Sanctum\NewAccessToken;
 use RuntimeException;
