@@ -53,6 +53,7 @@ class VerbstreamServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__.'/../../config/verbstream.php', 'verbstream');
         $this->loadRoutesFrom(__DIR__.'/../../routes/verbstream.php');
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
 
         foreach (config('verbstream.events') as $key => $value) {
             $this->app->bind($key, $value);
